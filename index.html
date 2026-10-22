@@ -675,7 +675,7 @@ let cg = '';
 VIEWS.courses = g => {
   if (g !== undefined) cg = DATA.cgroups.some(x => x.id === g) ? g : '';
   header(U('coursesT'), U('coursesSub'), true); tabs('dive');
-  const chips = '<div class="scrollx">' + [{ id: '', name: null }].concat(DATA.cgroups).map(x => '<button class="chip ' + (cg === x.id ? 'on' : '') + '" onclick="cg=\'' + x.id + '\';render()">' + (x.name ? esc(T(x.name)) : U('all')) + '</button>').join('') + '</div>';
+  const chips = '<div class="scrollx">' + [{ id: '', name: null }].concat(DATA.cgroups).map(x => '<button type="button" class="chip ' + (cg === x.id ? 'on' : '') + '" onclick="location.replace(\'#courses-' + x.id + '\')">' + (x.name ? esc(T(x.name)) : U('all')) + '</button>').join('') + '</div>';
   return '<p>' + U('about') + ' <a ' + ext + ' href="https://sensuidive.com">sensuidive.com ›</a></p>' + chips +
     DATA.cgroups.filter(x => !cg || x.id === cg).map(x => '<h3>' + esc(T(x.name)) + '</h3>' + x.items.map(courseCard).join('')).join('') +
     '<p class="note">' + U('spec') + '</p><div class="leaf"><p>' + T(DATA.meals) + '</p></div><p class="note">' + T(DATA.gear) + '</p>';
