@@ -200,6 +200,13 @@ body.th .price span{font-weight:400}
 .inst{display:grid;grid-template-columns:52px 1fr;gap:6px 12px;align-items:center;background:var(--navy);color:#fff;border-radius:16px;padding:14px;margin:18px 0 4px}
 .inst img{width:52px;height:52px;border-radius:12px;background:#0a2236}
 .inst b{font-size:15px}.inst p{margin:2px 0 0;font-size:12.5px;color:#c9d6e2}.inst p.note{color:var(--yel)}
+.isteps{grid-column:1/-1;display:grid;grid-template-columns:1fr 1.6fr 1fr;gap:8px;margin-top:4px}
+.istep{position:relative;display:flex;flex-direction:column;align-items:center;gap:5px;text-align:center;background:#16466b;border-radius:12px;padding:10px 6px 8px}
+.istep i{position:absolute;top:5px;left:7px;font-style:normal;font-weight:900;font-size:12px;color:var(--yel)}
+.istep svg{height:40px;width:auto;max-width:100%}
+.istep span{font-size:11px;font-weight:700;line-height:1.25;color:#fff}
+.inst a.ib{grid-column:1/-1;display:block;text-align:center;background:var(--yel);color:var(--navy);font-weight:800;font-size:14px;border-radius:12px;padding:11px;text-decoration:none}
+.inst button.ghost{background:none;color:var(--yel);border:1.5px solid rgba(246,224,75,.5)}
 .inst button{grid-column:1/-1;border:0;background:var(--yel);color:var(--navy);font-weight:800;font-size:14px;border-radius:12px;padding:11px;cursor:pointer}
 .datebtn{display:flex;align-items:center;gap:8px;width:100%;min-height:46px;background:var(--card);border:1.5px solid var(--line);border-radius:12px;padding:11px 12px;font-weight:700;font-size:14.5px;color:var(--navy);cursor:pointer;text-align:left;box-shadow:0 1px 2px rgba(14,47,74,.06)}
 .datebtn svg{width:18px;height:18px;flex:none;color:var(--sea)}
@@ -373,6 +380,10 @@ const ui = {
   instInApp: ['This page is open inside another app (LINE, Facebook, Instagram...), which cannot install apps. Tap the menu (three dots) and choose "Open in browser" (Chrome or Safari), then tap Install the app again.', 'หน้านี้เปิดอยู่ในแอปอื่น (LINE, Facebook, Instagram...) ซึ่งติดตั้งแอปไม่ได้ แตะเมนู (สามจุด) แล้วเลือก "เปิดในเบราว์เซอร์" (Chrome หรือ Safari) จากนั้นแตะ ติดตั้งแอป อีกครั้ง'],
   instOther: ['Open your browser menu and tap "Install app" or "Add to Home screen".', 'เปิดเมนูเบราว์เซอร์ แล้วแตะ "ติดตั้งแอป" หรือ "เพิ่มลงในหน้าจอหลัก"'],
   instHow: ['How to install', 'วิธีติดตั้ง'],
+  instChromeBtn: ['Open in Chrome to install', 'เปิดใน Chrome เพื่อติดตั้ง'],
+  iosS1: ['Tap Share at the bottom of Safari', 'แตะปุ่มแชร์ด้านล่างของ Safari'], iosS1c: ['Tap Share in the address bar', 'แตะปุ่มแชร์ที่ช่องที่อยู่'],
+  iosS2: ['Scroll down, tap Add to Home Screen', 'เลื่อนลง แตะ เพิ่มไปยังหน้าจอโฮม'], iosS3: ['Tap Add (top right)', 'แตะ เพิ่ม (มุมขวาบน)'],
+  iosAddTxt: ['Add to Home Screen', 'เพิ่มไปยังหน้าจอโฮม'], iosAddBtn: ['Add', 'เพิ่ม'],
   bMorning: ['morning boat', 'เรือรอบเช้า'], bAfternoon: ['afternoon boat', 'เรือรอบบ่าย'], bAny: ['Any company', 'บริษัทใดก็ได้'],
   bConfirm: ['We confirm the exact boat time when we reply. Rough seas can cancel boats.', 'เราจะยืนยันเวลาเรือที่แน่นอนเมื่อตอบกลับ คลื่นลมแรงอาจทำให้เรืองดออก'],
   bTimes: ['Times can change with the season. We confirm when we reply.', 'เวลาอาจเปลี่ยนตามฤดูกาล เราจะยืนยันเมื่อตอบกลับ'],
@@ -571,8 +582,23 @@ const standalone = () => matchMedia('(display-mode: standalone)').matches || nav
 const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 function installCard() {
   if (standalone()) return '';
-  return '<div class="inst"><img src="icon-192.png" alt="" width="52" height="52" onerror="this.src=DATA.img.logo"><div><b>' + U('inst') + '</b><p>' + U('instSub') + '</p>' +
-    (instHelp ? '<p class="note">' + U(instKey()) + '</p>' : '') + '</div><button type="button" onclick="doInstall()">' + U(instEvt || !instHelp ? 'inst' : 'instHow') + '</button></div>';
+  const k = instKey(), android = /Android/.test(navigator.userAgent);
+  // Android outside Chrome (Samsung Internet, LINE, Facebook...): jump to Chrome, where one-tap install works
+  const toChrome = !instEvt && android && /instInApp|instSamsung|instOther/.test(k);
+  const btn = instEvt ? '<button type="button" onclick="doInstall()">' + U('inst') + '</button>'
+    : toChrome ? '<a class="ib" href="' + chromeHref() + '">' + U('instChromeBtn') + '</a><button type="button" class="ghost" onclick="doInstall()">' + U('instHow') + '</button>'
+    : '<button type="button" onclick="doInstall()">' + U('instHow') + '</button>';
+  const help = !instHelp ? '' : /instIOS/.test(k) ? iosSteps(k) : '<p class="note">' + U(k) + '</p>';
+  return '<div class="inst"><img src="icon-192.png" alt="" width="52" height="52" onerror="this.src=DATA.img.logo"><div><b>' + U('inst') + '</b><p>' + U('instSub') + '</p></div>' + help + btn + '</div>';
+}
+const chromeHref = () => 'intent://' + location.host + location.pathname + '#Intent;scheme=https;package=com.android.chrome;S.browser_fallback_url=' + encodeURIComponent(location.origin + location.pathname) + ';end';
+// iPhone: Apple allows no one-tap install, so 3 small pictures: Share > Add to Home Screen > Add
+function iosSteps(k) {
+  const sh = '<svg viewBox="0 0 48 48"><rect x="4" y="4" width="40" height="40" rx="10" fill="#fff"/><path d="M24 12v17M18 18l6-6 6 6M16 24h-2v13h20V24h-2" fill="none" stroke="#1f7fb8" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+  const add = '<svg viewBox="0 0 120 48"><rect x="2" y="6" width="116" height="36" rx="9" fill="#fff"/><text x="9" y="28.5" font-size="10.5" font-weight="700" fill="#0e2f4a" font-family="sans-serif" textLength="80" lengthAdjust="spacingAndGlyphs">' + U('iosAddTxt') + '</text><rect x="96" y="15" width="16" height="16" rx="4" fill="none" stroke="#0e2f4a" stroke-width="2"/><path d="M104 19v8M100 23h8" stroke="#0e2f4a" stroke-width="2" stroke-linecap="round"/></svg>';
+  const ok = '<svg viewBox="0 0 48 48"><rect x="4" y="4" width="40" height="40" rx="10" fill="#fff"/><text x="24" y="29" text-anchor="middle" font-size="13" font-weight="800" fill="#1f7fb8" font-family="sans-serif">' + U('iosAddBtn') + '</text></svg>';
+  const st = (n, pic, t) => '<div class="istep"><i>' + n + '</i>' + pic + '<span>' + t + '</span></div>';
+  return '<div class="isteps">' + st(1, sh, U(k === 'instIOSChrome' ? 'iosS1c' : 'iosS1')) + st(2, add, U('iosS2')) + st(3, ok, U('iosS3')) + '</div>';
 }
 // which steps to show when the phone gives no one-tap install (iPhone, Samsung Internet, in-app browsers, older Chrome)
 function instKey() {
