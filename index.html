@@ -917,7 +917,7 @@ VIEWS.report = k => {
   if (KINDS.some(x => x[0] === k)) rk = k;
   header(U('report'), U('rSub'), true); tabs('dive');
   const ic = KINDS.find(x => x[0] === rk)[2];
-  return '<p>' + U('rIntro') + '</p><h3>' + U('rWhat') + '</h3><div class="kinds">' + KINDS.map(([id, l]) => '<button class="' + (rk === id ? 'on' : '') + '" onclick="rk=\'' + id + '\';render()">' + U(l) + '</button>').join('') + '</div>' +
+  return '<p>' + U('rIntro') + '</p><h3>' + U('rWhat') + '</h3><div class="kinds">' + KINDS.map(([id, l]) => '<button class="' + (rk === id ? 'on' : '') + '" type="button" onclick="location.replace(\'#report-' + id + '\')">' + U(l) + '</button>').join('') + '</div>' +
     '<div class="ws">' + svg(ic) + '<p>' + U('tip_' + rk) + '</p></div>' +
     (rk === 'whale' || rk === 'turtle' ? '<div class="safety">' + svg('camera') + '<p>' + U('camRule') + '</p></div>' : '') +
     '<a class="btn y" ' + ext + ' href="' + FORM + '">' + svg('camera') + U('openForm') + '</a><p class="note">' + U('formNote') + '</p>' +
