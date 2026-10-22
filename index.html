@@ -366,8 +366,13 @@ const ui = {
   boatT: ['Island boats', 'เรือไปเกาะ'], boatSub: ['Lomprayah and Boonsiri tickets', 'ตั๋วเรือลมพระยาและบุญศิริ'],
   boatP: ['We can book your boat ticket. Choose your trip and send it to us. We reply with the price and confirm your seats.', 'เราจองตั๋วเรือให้ได้ เลือกเส้นทางแล้วส่งมาหาเรา เราจะตอบกลับพร้อมราคาและยืนยันที่นั่ง'],
   canBook: ['We can book this for you', 'เราจองให้ได้'], bFrom: ['From', 'จาก'], bTo: ['To', 'ไป'], bDate: ['Date', 'วันที่'], bBoat: ['Time', 'เวลา'], bCo: ['Boat company', 'บริษัทเรือ'], pickDate: ['Choose a date', 'เลือกวันที่'], inst: ['Install the app', 'ติดตั้งแอป'], instSub: ['Free. Nothing to download from a store. Works without signal.', 'ฟรี ไม่ต้องโหลดจากสโตร์ ใช้ได้แม้ไม่มีสัญญาณ'],
-  instIOS: ['On iPhone: tap the Share button (square with an arrow) in Safari, then "Add to Home Screen".', 'บน iPhone: แตะปุ่มแชร์ (สี่เหลี่ยมมีลูกศร) ใน Safari แล้วเลือก "เพิ่มไปยังหน้าจอโฮม"'],
-  instOther: ['Open your browser menu (⋮) and tap "Install app" or "Add to Home screen".', 'เปิดเมนูเบราว์เซอร์ (⋮) แล้วแตะ "ติดตั้งแอป" หรือ "เพิ่มลงในหน้าจอหลัก"'],
+  instIOS: ['iPhone (Safari): 1. Tap the Share button (square with an arrow) at the bottom. 2. Scroll down, tap "Add to Home Screen". 3. Tap "Add".', 'iPhone (Safari): 1. แตะปุ่มแชร์ (สี่เหลี่ยมมีลูกศร) ด้านล่าง 2. เลื่อนลง แตะ "เพิ่มไปยังหน้าจอโฮม" 3. แตะ "เพิ่ม"'],
+  instIOSChrome: ['iPhone (Chrome): 1. Tap the Share button (square with an arrow) in the address bar. 2. Tap "Add to Home Screen". 3. Tap "Add".', 'iPhone (Chrome): 1. แตะปุ่มแชร์ (สี่เหลี่ยมมีลูกศร) ที่ช่องที่อยู่ 2. แตะ "เพิ่มไปยังหน้าจอโฮม" 3. แตะ "เพิ่ม"'],
+  instSamsung: ['Samsung Internet: 1. Tap the menu (three lines) at the bottom right. 2. Tap "Add page to". 3. Tap "Home screen" and "Add". Or tap the install icon in the address bar.', 'Samsung Internet: 1. แตะเมนู (สามขีด) มุมขวาล่าง 2. แตะ "เพิ่มหน้าไปยัง" 3. แตะ "หน้าจอหลัก" แล้ว "เพิ่ม" หรือแตะไอคอนติดตั้งที่ช่องที่อยู่'],
+  instChrome: ['Android (Chrome): 1. Tap the menu (three dots) at the top right. 2. Tap "Add to Home screen" or "Install app". 3. Tap "Install".', 'Android (Chrome): 1. แตะเมนู (สามจุด) มุมขวาบน 2. แตะ "เพิ่มลงในหน้าจอหลัก" หรือ "ติดตั้งแอป" 3. แตะ "ติดตั้ง"'],
+  instInApp: ['This page is open inside another app (LINE, Facebook, Instagram...), which cannot install apps. Tap the menu (three dots) and choose "Open in browser" (Chrome or Safari), then tap Install the app again.', 'หน้านี้เปิดอยู่ในแอปอื่น (LINE, Facebook, Instagram...) ซึ่งติดตั้งแอปไม่ได้ แตะเมนู (สามจุด) แล้วเลือก "เปิดในเบราว์เซอร์" (Chrome หรือ Safari) จากนั้นแตะ ติดตั้งแอป อีกครั้ง'],
+  instOther: ['Open your browser menu and tap "Install app" or "Add to Home screen".', 'เปิดเมนูเบราว์เซอร์ แล้วแตะ "ติดตั้งแอป" หรือ "เพิ่มลงในหน้าจอหลัก"'],
+  instHow: ['How to install', 'วิธีติดตั้ง'],
   bMorning: ['morning boat', 'เรือรอบเช้า'], bAfternoon: ['afternoon boat', 'เรือรอบบ่าย'], bAny: ['Any company', 'บริษัทใดก็ได้'],
   bConfirm: ['We confirm the exact boat time when we reply. Rough seas can cancel boats.', 'เราจะยืนยันเวลาเรือที่แน่นอนเมื่อตอบกลับ คลื่นลมแรงอาจทำให้เรืองดออก'],
   bTimes: ['Times can change with the season. We confirm when we reply.', 'เวลาอาจเปลี่ยนตามฤดูกาล เราจะยืนยันเมื่อตอบกลับ'],
@@ -567,7 +572,16 @@ const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.
 function installCard() {
   if (standalone()) return '';
   return '<div class="inst"><img src="icon-192.png" alt="" width="52" height="52" onerror="this.src=DATA.img.logo"><div><b>' + U('inst') + '</b><p>' + U('instSub') + '</p>' +
-    (instHelp ? '<p class="note">' + U(isIOS() ? 'instIOS' : 'instOther') + '</p>' : '') + '</div><button type="button" onclick="doInstall()">' + U('inst') + '</button></div>';
+    (instHelp ? '<p class="note">' + U(instKey()) + '</p>' : '') + '</div><button type="button" onclick="doInstall()">' + U(instEvt || !instHelp ? 'inst' : 'instHow') + '</button></div>';
+}
+// which steps to show when the phone gives no one-tap install (iPhone, Samsung Internet, in-app browsers, older Chrome)
+function instKey() {
+  const ua = navigator.userAgent;
+  if (/FBAN|FBAV|Instagram|Line\/|Messenger|MicroMessenger|TikTok|musical_ly|; wv\)/i.test(ua)) return 'instInApp';
+  if (isIOS()) return /CriOS|FxiOS|EdgiOS/.test(ua) ? 'instIOSChrome' : 'instIOS';
+  if (/SamsungBrowser/.test(ua)) return 'instSamsung';
+  if (/Android/.test(ua) && /Chrome/.test(ua)) return 'instChrome';
+  return 'instOther';
 }
 async function doInstall() {
   if (instEvt) { instEvt.prompt(); await instEvt.userChoice; instEvt = null; render(); return; }
