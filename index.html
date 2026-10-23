@@ -380,7 +380,7 @@ const ui = {
   fx_link: ['Broken link', 'ลิงก์เสีย'], fx_hours: ['Wrong opening hours', 'เวลาเปิด-ปิดไม่ถูกต้อง'], fx_bug: ['The app is not working right', 'แอปทำงานไม่ถูกต้อง'], fx_other: ['Something else', 'อื่น ๆ'],
   fixNote: ['More details (optional)', 'รายละเอียดเพิ่มเติม (ไม่บังคับ)'], fixMsg: ['Problem in the guide', 'แจ้งปัญหาในแอป'], fixApp: ['The app', 'แอป'],
   follow: ['Follow us', 'ติดตามเรา'],
-  findUs: ['Find us', 'ที่ตั้งร้าน'], dirs: ['Directions', 'นำทาง'], findShop: ['Find the dive shop', 'ที่ตั้งร้านดำน้ำ'],
+  findUs: ['Find us', 'ที่ตั้งร้าน'], dirs: ['Directions', 'นำทาง'], findShop: ['Find the dive shop', 'ที่ตั้งร้านดำน้ำ'], neverDived: ['Never dived? Visit the dive shop', 'ยังไม่เคยดำน้ำ? แวะมาที่ร้านได้'],
   shopAddr: ['210 Krumluang Chumphon Rd, Tha Taphao, Chumphon 86000', '210 ถ.กรมหลวงชุมพร ต.ท่าตะเภา อ.เมืองชุมพร จ.ชุมพร 86000'],
   shopShort: ['210 Krumluang Rd, Chumphon', '210 ถ.กรมหลวงชุมพร ชุมพร'],
   transfers: ['Transfers included with fun dives and packages', 'รวมรถรับส่งสำหรับ Fun Dive และแพ็กเกจ'],
@@ -576,7 +576,7 @@ const exploreGrid = () => '<div class="grid3">' +
 VIEWS.explore = () => {
   header(U('exploreT'), U('appSub')); tabs('explore');
   return '<form class="search" onsubmit="event.preventDefault();go(\'search-\'+encodeURIComponent(this.q.value))">' + svg('search') + '<input name="q" type="search" placeholder="' + U('search') + '" aria-label="' + U('search') + '"></form>' +
-    exploreGrid();
+    exploreGrid() + shopRow(U('neverDived'));
 };
 VIEWS.home = () => {
   header('Chumphon Guide', U('appSub')); tabs('home');
