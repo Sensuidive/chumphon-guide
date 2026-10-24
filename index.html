@@ -683,7 +683,7 @@ VIEWS.site = id => {
 
 let wsAll = false;
 VIEWS.ws = () => {
-  header(U('wsLog'), U('wsSub')); tabs('dive');
+  header(U('wsLog'), U('wsSub'), true); tabs('dive');
   const months = [3, 4, 5, 6, 7, 8, 9, 10], cnt = months.map(m => DATA.ws.filter(r => r.m === m).length), mx = Math.max(...cnt);
   const rows = DATA.ws.slice().sort((a, b) => (b.y - a.y) || (b.m - a.m) || (b.d - a.d));
   const shown = wsAll ? rows : rows.slice(0, 6);
@@ -701,10 +701,10 @@ let grp = '', near = false;
 VIEWS.list = sec => {
   if (!SECS.includes(sec)) sec = 'eat';
   const items = DATA.listings.filter(x => x.sec === sec);
-  header(U(sec), items.length + ' ' + U('places')); tabs('explore');
+  header(U(sec), items.length + ' ' + U('places'), true); tabs('explore');
   const groups = [...new Set(items.map(x => F(x, 'group')))];
   if (!groups.includes(grp)) grp = '';
-  const seg = '<div class="scrollx">' + SECS.map(k => '<button class="chip ' + (k === sec ? 'on' : '') + '" onclick="grp=\'\';go(\'list-' + k + '\')">' + U(k) + '</button>').join('') + '</div>';
+  const seg = '<div class="scrollx">' + SECS.map(k => '<button class="chip ' + (k === sec ? 'on' : '') + '" onclick="grp=\'\';near=false;location.replace(\'#list-' + k + '\')">' + U(k) + '</button>').join('') + '</div>';
   const gch = groups.length > 1 ? '<div class="scrollx">' + ['', ...groups].map(g => '<button class="chip ' + (g === grp ? 'on' : '') + '" onclick="grp=this.dataset.g;render()" data-g="' + esc(g) + '">' + esc(g || U('all')) + '</button>').join('') + '</div>' : '';
   const byName = (a, b) => groups.indexOf(F(a, 'group')) - groups.indexOf(F(b, 'group')) || F(a, 'name').localeCompare(F(b, 'name'), lang === 'th' ? 'th' : 'en', { sensitivity: 'base' });
   const canNear = sec === 'stay' || sec === 'long';
