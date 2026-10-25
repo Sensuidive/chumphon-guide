@@ -422,7 +422,7 @@ const ui = {
   shopAddr: ['210 Krumluang Chumphon Rd, Tha Taphao, Chumphon 86000', '210 ถ.กรมหลวงชุมพร ต.ท่าตะเภา อ.เมืองชุมพร จ.ชุมพร 86000'],
   shopShort: ['210 Krumluang Rd, Chumphon', '210 ถ.กรมหลวงชุมพร ชุมพร'],
   transfers: ['Transfers included with fun dives and packages', 'รวมรถรับส่งสำหรับ Fun Dive และแพ็กเกจ'],
-  boatT: ['Island boats', 'เรือไปเกาะ'], boatSub: ['Lomprayah and Boonsiri tickets', 'ตั๋วเรือลมพระยาและบุญศิริ'],
+  boatT: ['Island boats', 'เรือไปเกาะ'], ferryT: ['Ferry to Koh Tao / Koh Phangan / Samui', 'เรือไปเกาะเต่า / เกาะพะงัน / เกาะสมุย'], boatSub: ['Lomprayah and Boonsiri tickets', 'ตั๋วเรือลมพระยาและบุญศิริ'],
   boatP: ['We can book your boat ticket. Choose your trip and send it to us. We reply with the price and confirm your seats.', 'เราจองตั๋วเรือให้ได้ เลือกเส้นทางแล้วส่งมาหาเรา เราจะตอบกลับพร้อมราคาและยืนยันที่นั่ง'],
   canBook: ['We can book this for you', 'เราจองให้ได้'], bFrom: ['From', 'จาก'], bTo: ['To', 'ไป'], bDate: ['Date', 'วันที่'], bBoat: ['Time', 'เวลา'], bCo: ['Boat company', 'บริษัทเรือ'], pickDate: ['Choose a date', 'เลือกวันที่'], inst: ['Install the app', 'ติดตั้งแอป'], instSub: ['Free. Nothing to download from a store. Works without signal.', 'ฟรี ไม่ต้องโหลดจากสโตร์ ใช้ได้แม้ไม่มีสัญญาณ'],
   instIOS: ['iPhone (Safari): 1. Tap the Share button (square with an arrow) at the bottom. 2. Scroll down, tap "Add to Home Screen". 3. Tap "Add".', 'iPhone (Safari): 1. แตะปุ่มแชร์ (สี่เหลี่ยมมีลูกศร) ด้านล่าง 2. เลื่อนลง แตะ "เพิ่มไปยังหน้าจอโฮม" 3. แตะ "เพิ่ม"'],
@@ -648,7 +648,7 @@ const exploreGrid = home => '<div class="grid3">' +
   tile('tour', 'route', '#138a8a', U('cityTour'), '1,800 ' + U('thb'), 's') +
   tile('list-tours', 'mask', '#1f7fb8', U('tours'), nSec('tours') + ' ' + U('places'), 's') +
   tile('list-useful', 'cross', '#c2477a', U('useful'), nSec('useful') + ' ' + U('places'), 's') +
-  tile('boat', 'ferry', '#138a8a', U('boatT'), U('boatSub'), 's wide') +
+  tile('boat', 'ferry', '#138a8a', U('ferryT'), U('boatSub'), 's wide') +
   tile('journey', 'star', '#a87300', U('jlog'), jcount() + '/9 ' + U('places') + ' · ' + U('jSub').split(' · ')[1], 's wide') + '</div>';
 VIEWS.explore = () => {
   header(U('exploreT'), U('appSub')); tabs('explore');
@@ -668,18 +668,17 @@ const bannerTile = b => '<a class="tile s bt bt-' + b.c + '" href="#' + b.href +
 const banners = () => { const L = liveBanners(); return L.length ? '<div class="grid2' + (L.length === 1 ? ' one' : '') + '">' + L.map(bannerTile).join('') + '</div>' : ''; };
 const seasonBox = () => CLOSED ? '<div class="season"><div><b>' + U('seasonB') + '</b><p>' + U('seasonP') + '</p></div><a href="#book">' + U('reserve') + '</a></div>'
   : '<div class="season"><div><b>' + U('openB') + '</b><p>' + U('openP') + '</p></div><a href="#book">' + U('bookDive') + '</a></div>';
-const boatRow = () => '<div class="grid3">' + tile('boat', 'ferry', '#138a8a', U('boatT'), U('boatSub'), 's wide') + '</div>';
+const boatRow = () => '<div class="grid3">' + tile('boat', 'ferry', '#138a8a', U('ferryT'), U('boatSub'), 's wide') + '</div>';
 VIEWS.home = () => {
   header('Chumphon Guide', U('appSub')); tabs('home');
   const start = '<h2 class="sec">' + U('startT') + '</h2><div class="grid3">' +
     tile('sites', 'pin', 'var(--sea)', U('sites'), U('sitesN'), 's') +
     tile('courses-', 'padi', '#0e2f4a', U('coursesT'), ALLC().length + ' ' + U('coursesN'), 's') +
-    tile('list-eat', 'fork', '#d9572b', U('eat'), nSec('eat') + ' ' + U('places'), 's') + '</div>';
+    tile('list-stay', 'bed', '#7b4bb7', U('stay'), nSec('stay') + ' ' + U('places'), 's') + '</div>';
   return '<div class="hero s" style="background-image:url(' + DATA.img.hero + ')"><h1>Chumphon</h1><p>' + U('heroP') + '</p><span class="k">' + U('heroK') + '</span></div>' +
     '<form class="search" role="search" onsubmit="event.preventDefault();go(\'search-\'+encodeURIComponent(this.q.value))">' + svg('search') + '<input id="q" name="q" type="search" placeholder="' + U('search') + '" aria-label="' + U('search') + '"></form>' +
     iosCard() + seasonBox() + banners() +
-    (CLOSED ? boatRow() + start : start + boatRow()) +   // while diving is closed, island boats go above Start here
-    shopRow(U('findShop')) + squadCard() + installCard() + '<div class="slogan">Go with the flow, Dance with the sea®</div>';
+    start + shopRow(U('findShop')) + boatRow() + squadCard() + installCard() + '<div class="slogan">Go with the flow, Dance with the sea®</div>';
 };
 // ---------- install on the home screen (Android: one tap; iPhone: Share > Add to Home Screen) ----------
 let instEvt = null, instHelp = false;
