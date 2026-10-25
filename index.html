@@ -78,6 +78,7 @@ body.th .btn{font-weight:500}
 .btn.ln{background:var(--lineapp);color:var(--lineink)}
 .btn.o{border:1.5px solid var(--navy);color:var(--navy);background:var(--card)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.rw .usedl{display:block;color:#137a3f;font-weight:700}.rw.used{opacity:.75}.rw .mini{flex:none}
 .foot2{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:14px;color:var(--muted,#6b7a89)}.foot2 .fixl{margin:0}
 .otag{display:inline-block;margin-top:4px;font-size:14px;font-weight:700;color:#9a3b1f}.otag.on{color:#137a3f}
 .scrollx .chip svg{width:15px;height:15px;vertical-align:-2px;margin-right:4px}
@@ -383,7 +384,7 @@ const ui = {
   route: ['Route', 'เส้นทาง'], bookTour: ['Book this tour', 'จองทัวร์นี้'], journeyHint: ['Each stop also counts for the Journey Log.', 'ทุกจุดนับเป็นแสตมป์ใน Journey Log ด้วย'],
   msgBiz: ['Hi! I found you on the Chumphon Guide app.', 'สวัสดีครับ พบข้อมูลของคุณจากแอป Chumphon Guide'],
   msgHi: ['Hi Sensui! From the Chumphon Guide app:', 'สวัสดีครับ Sensui! จากแอป Chumphon Guide:'],
-  msgPeople: ['people', 'คน'], msgLang: ['language', 'ภาษา'], msgName: ['Name', 'ชื่อ'], msgDates: ['dates', 'วันที่'], openB: ['Season 2027 is open', 'ฤดูกาล 2570 เปิดแล้ว'], openP: ['Small groups, max 4 divers per guide. Message us with your dates.', 'กลุ่มเล็ก ไกด์ 1 คนดูแลไม่เกิน 4 คน ทักมาพร้อมวันที่ได้เลย'], bookDive: ['Book a dive', 'จองดำน้ำ'], checked: ['Checked', 'ตรวจสอบเมื่อ'], openNow: ['Open now', 'เปิดอยู่ตอนนี้'], openNowT: ['Open now', 'เปิดอยู่'], closedNowT: ['Closed now', 'ปิดอยู่'], nearMe: ['Near me', 'ใกล้ฉัน'], finding: ['Finding you...', 'กำลังหาตำแหน่ง...'], fromYou: ['from you', 'จากคุณ'], noLoc: ['Location is off or not allowed. Turn it on in your phone settings to sort by distance.', 'ตำแหน่งปิดอยู่หรือไม่ได้อนุญาต เปิดในการตั้งค่าโทรศัพท์เพื่อเรียงตามระยะทาง'], noneOpen: ['Nothing with known hours is open right now.', 'ตอนนี้ไม่มีที่ที่ทราบเวลาเปิดและเปิดอยู่'], openNote: ['Open now shows only places whose hours we know (Bangkok time). Hours can change; call to check.', 'แสดงเฉพาะที่ที่เราทราบเวลาเปิด (เวลาไทย) เวลาอาจเปลี่ยนได้ โทรถามก่อน'], iosT: ['Add the guide to your iPhone', 'เพิ่มคู่มือไว้บน iPhone'], notNow: ['Not now', 'ไว้ทีหลัง'], offline: ['Offline: maps and boat times still work', 'ออฟไลน์อยู่: แผนที่และเวลาเรือยังใช้ได้'], boatTip: ['Save for the boat: open this page once while you have signal and it keeps working offline at sea. Or tap the map and save the picture.', 'เก็บไว้ดูบนเรือ: เปิดหน้านี้หนึ่งครั้งตอนมีสัญญาณ แล้วจะดูได้แม้ไม่มีสัญญาณกลางทะเล หรือแตะแผนที่แล้วบันทึกรูปไว้'], whereAlt: ['Map of our 11 dive sites in Mu Ko Chumphon National Park, numbered south to north', 'แผนที่จุดดำน้ำ 11 จุดของเราในอุทยานแห่งชาติหมู่เกาะชุมพร เรียงหมายเลขจากใต้ขึ้นเหนือ'], mapOf: ['Dive site map:', 'แผนที่จุดดำน้ำ'], depthW: ['Depth', 'ความลึก'], moorW: ['mooring lines', 'ทุ่นผูกเรือ'], seeW: ['You can see', 'สิ่งที่จะได้เห็น'], noDates: ['Dates not fixed yet', 'ยังไม่กำหนดวัน'], msgNoDates: ['dates not fixed yet', 'ยังไม่กำหนดวัน'], opt: ['optional', 'ไม่บังคับ'], perP: ['per person', 'ต่อคน'], trustBook: ['Google 5.0 from 69 reviews · PADI Dive Center · max 4 divers per guide', 'Google 5.0 จาก 69 รีวิว · PADI Dive Center · ไกด์ 1 คนดูแลไม่เกิน 4 คน'],
+  msgPeople: ['people', 'คน'], msgLang: ['language', 'ภาษา'], msgName: ['Name', 'ชื่อ'], msgDates: ['dates', 'วันที่'], stocks: ['while stocks last', 'มีจำนวนจำกัด'], redeem: ['Redeem', 'ใช้สิทธิ์'], usedT: ['Used', 'ใช้แล้ว'], usedOn: ['Used on', 'ใช้เมื่อ'], redeemQ: ['Staff only: mark reward {r} as used today? This cannot be undone on this phone.', 'สำหรับพนักงาน: บันทึกว่าใช้รางวัลที่ {r} แล้ววันนี้? ย้อนกลับไม่ได้บนโทรศัพท์เครื่องนี้'], redeemNote: ['Show this screen at the shop or the Kopi Tiam. Our staff tap Redeem.', 'แสดงหน้าจอนี้ที่ร้านหรือที่ Kopi Tiam พนักงานจะกด ใช้สิทธิ์ ให้'], shareJ: ['Share my Journey Log', 'แชร์บันทึกการเดินทางของฉัน'], shareSub: ['places in Chumphon', 'แห่งในชุมพร'], openB: ['Season 2027 is open', 'ฤดูกาล 2570 เปิดแล้ว'], openP: ['Small groups, max 4 divers per guide. Message us with your dates.', 'กลุ่มเล็ก ไกด์ 1 คนดูแลไม่เกิน 4 คน ทักมาพร้อมวันที่ได้เลย'], bookDive: ['Book a dive', 'จองดำน้ำ'], checked: ['Checked', 'ตรวจสอบเมื่อ'], openNow: ['Open now', 'เปิดอยู่ตอนนี้'], openNowT: ['Open now', 'เปิดอยู่'], closedNowT: ['Closed now', 'ปิดอยู่'], nearMe: ['Near me', 'ใกล้ฉัน'], finding: ['Finding you...', 'กำลังหาตำแหน่ง...'], fromYou: ['from you', 'จากคุณ'], noLoc: ['Location is off or not allowed. Turn it on in your phone settings to sort by distance.', 'ตำแหน่งปิดอยู่หรือไม่ได้อนุญาต เปิดในการตั้งค่าโทรศัพท์เพื่อเรียงตามระยะทาง'], noneOpen: ['Nothing with known hours is open right now.', 'ตอนนี้ไม่มีที่ที่ทราบเวลาเปิดและเปิดอยู่'], openNote: ['Open now shows only places whose hours we know (Bangkok time). Hours can change; call to check.', 'แสดงเฉพาะที่ที่เราทราบเวลาเปิด (เวลาไทย) เวลาอาจเปลี่ยนได้ โทรถามก่อน'], iosT: ['Add the guide to your iPhone', 'เพิ่มคู่มือไว้บน iPhone'], notNow: ['Not now', 'ไว้ทีหลัง'], offline: ['Offline: maps and boat times still work', 'ออฟไลน์อยู่: แผนที่และเวลาเรือยังใช้ได้'], boatTip: ['Save for the boat: open this page once while you have signal and it keeps working offline at sea. Or tap the map and save the picture.', 'เก็บไว้ดูบนเรือ: เปิดหน้านี้หนึ่งครั้งตอนมีสัญญาณ แล้วจะดูได้แม้ไม่มีสัญญาณกลางทะเล หรือแตะแผนที่แล้วบันทึกรูปไว้'], whereAlt: ['Map of our 11 dive sites in Mu Ko Chumphon National Park, numbered south to north', 'แผนที่จุดดำน้ำ 11 จุดของเราในอุทยานแห่งชาติหมู่เกาะชุมพร เรียงหมายเลขจากใต้ขึ้นเหนือ'], mapOf: ['Dive site map:', 'แผนที่จุดดำน้ำ'], depthW: ['Depth', 'ความลึก'], moorW: ['mooring lines', 'ทุ่นผูกเรือ'], seeW: ['You can see', 'สิ่งที่จะได้เห็น'], noDates: ['Dates not fixed yet', 'ยังไม่กำหนดวัน'], msgNoDates: ['dates not fixed yet', 'ยังไม่กำหนดวัน'], opt: ['optional', 'ไม่บังคับ'], perP: ['per person', 'ต่อคน'], trustBook: ['Google 5.0 from 69 reviews · PADI Dive Center · max 4 divers per guide', 'Google 5.0 จาก 69 รีวิว · PADI Dive Center · ไกด์ 1 คนดูแลไม่เกิน 4 คน'],
   emerg: ['Emergency: 1669 medical · 191 police · 1155 tourist police', 'ฉุกเฉิน: 1669 การแพทย์ · 191 ตำรวจ · 1155 ตำรวจท่องเที่ยว'],
   jlog: ['Journey Log', 'บันทึกการเดินทาง'], jSub: ['9 places · rewards at 3, 6 and 9', 'เที่ยว 9 แห่ง · รับรางวัลเมื่อครบ 3, 6 และ 9 แห่ง'],
   jProg: ['places done. {n} to go.', 'แห่งที่ไปแล้ว เหลืออีก {n} แห่ง'], jAll: ['Journey complete! Show this screen at Sensui.', 'ครบทุกแห่งแล้ว! แสดงหน้าจอนี้ที่ Sensui'],
@@ -836,6 +837,33 @@ let jlog = {};
 try { jlog = JSON.parse(localStorage.getItem(JKEY) || '{}') || {}; } catch (e) {}
 const jsave = () => { try { localStorage.setItem(JKEY, JSON.stringify(jlog)); return true; } catch (e) { return false; } };
 const jcount = () => DATA.journey.filter((_, i) => jlog[i]).length;
+// rewards used: staff tap Redeem on the guest's phone, the date is kept on this phone (plan item 8)
+const RKEY2 = 'cg_redeem';
+let jred = {};
+try { jred = JSON.parse(localStorage.getItem(RKEY2) || '{}') || {}; } catch (e) {}
+function redeem(r) {
+  if (!confirm(U('redeemQ').replace('{r}', r))) return;
+  jred[r] = isoToday(); try { localStorage.setItem(RKEY2, JSON.stringify(jred)); } catch (e) {} render();
+}
+// 6-of-9 share card: picture drawn on the phone, nothing uploaded
+async function shareJ() {
+  try { await document.fonts.ready; } catch (e) {}
+  const W = 1080, H = 1350, c = document.createElement('canvas'); c.width = W; c.height = H;
+  const g = c.getContext('2d'), F = lang === 'th' ? '"Mitr", sans-serif' : '"Montserrat", sans-serif';
+  g.fillStyle = '#0e2f4a'; g.fillRect(0, 0, W, H);
+  g.fillStyle = '#f6e04b'; g.font = '800 54px ' + F; g.fillText(U('jlog'), 80, 150);
+  g.fillStyle = '#fff'; g.font = '900 220px ' + F; g.fillText(jcount() + '/9', 70, 400);
+  g.font = '600 40px ' + F; g.fillText(U('shareSub'), 80, 470);
+  let y = 580; g.font = '500 40px ' + F;
+  DATA.journey.forEach((p, i) => { if (!jlog[i]) return; g.fillStyle = '#f6e04b'; g.fillText('✓', 80, y); g.fillStyle = '#fff'; g.fillText(T(p.name).slice(0, 40), 140, y); y += 66; });
+  g.fillStyle = '#f6e04b'; g.fillRect(0, H - 170, W, 170);
+  g.fillStyle = '#0e2f4a'; g.font = '800 44px ' + F; g.fillText('Chumphon Guide, made by Sensui', 80, H - 98);
+  g.font = '600 34px ' + F; g.fillText(location.protocol === 'https:' ? location.host + location.pathname.replace(/index\.html$/, '') : 'guide.sensuidive.com', 80, H - 48);
+  const blob = await new Promise(r => c.toBlob(r, 'image/png'));
+  const file = new File([blob], 'chumphon-journey-log.png', { type: 'image/png' });
+  try { if (navigator.canShare && navigator.canShare({ files: [file] })) { await navigator.share({ files: [file], title: U('jlog') }); return; } } catch (e) { if (e && e.name === 'AbortError') return; }
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = file.name; document.body.appendChild(a); a.click(); a.remove();
+}
 const jmsg = {};
 const km = (a, b, c, d) => { const r = Math.PI / 180, x = Math.sin((c - a) * r / 2) ** 2 + Math.cos(a * r) * Math.cos(c * r) * Math.sin((d - b) * r / 2) ** 2; return 12742 * Math.asin(Math.sqrt(x)); };
 const isoToday = () => { const d = new Date(); return d.getFullYear() + '-' + String(d.getMonth() + 1).padStart(2, '0') + '-' + String(d.getDate()).padStart(2, '0'); };
@@ -871,8 +899,11 @@ VIEWS.journey = mode => {
   const J = DATA.journey, n = jcount();
   const rw = [3, 6, 9].map((k, r) => {
     const on = n >= k;
-    return '<div class="rw' + (on ? ' on' : '') + '"><span class="rn">' + k + '</span><div><b>' + U('reward') + ' ' + (r + 1) + (k === 9 ? ' · ' + U('jComplete') : '') + '</b><span>' +
-      (on ? U('prize' + (r + 1)) + ' · ' + U('showAt') : U('moreP').replace('{n}', k - n) + ' · ' + U('prize' + (r + 1))) + '</span></div><em>' + (on ? '✓ ' + U('unlocked') : U('locked')) + '</em></div>';
+    const used = jred[r + 1];
+    return '<div class="rw' + (on ? ' on' : '') + (used ? ' used' : '') + '"><span class="rn">' + k + '</span><div><b>' + U('reward') + ' ' + (r + 1) + (k === 9 ? ' · ' + U('jComplete') : '') + '</b><span>' +
+      (on ? U('prize' + (r + 1)) + ' (' + U('stocks') + ')' + (used ? '' : ' · ' + U('showAt')) : U('moreP').replace('{n}', k - n) + ' · ' + U('prize' + (r + 1))) + '</span>' +
+      (used ? '<span class="usedl">' + U('usedOn') + ' ' + fmtDate(used) + '</span>' : '') + '</div>' +
+      (used ? '<em>✓ ' + U('usedT') + '</em>' : on ? '<button type="button" class="mini y" onclick="redeem(' + (r + 1) + ')">' + U('redeem') + '</button>' : '<em>' + U('locked') + '</em>') + '</div>';
   }).join('');
   const places = J.map((p, i) => {
     const s = jlog[i];
@@ -882,9 +913,10 @@ VIEWS.journey = mode => {
       (s ? '<label class="mini" aria-label="Photo">' + svg('camera') + '<input type="file" accept="image/*" capture="user" onchange="addPhoto(' + i + ',this)"></label>'
          : '<button class="mini y" onclick="stamp(' + i + ')">' + U('checkIn') + '</button>') + '</div>';
   }).join('');
-  return (mode === 'test' ? '<div class="season"><div><b>' + U('testB') + '</b><p>' + U('testP') + '</p></div><a href="#journey-test" onclick="jlog={};jsave();render();return false">' + U('clear') + '</a></div>' : '') +
+  return (mode === 'test' ? '<div class="season"><div><b>' + U('testB') + '</b><p>' + U('testP') + '</p></div><a href="#journey-test" onclick="jlog={};jsave();jred={};try{localStorage.removeItem(RKEY2)}catch(e){};render();return false">' + U('clear') + '</a></div>' : '') +
     '<div class="stat j"><div><span class="big">' + n + '/9</span><p>' + (n === 9 ? U('jAll') : U('jProg').replace('{n}', 9 - n)) + '</p></div><div class="jtrack">' + J.map((_, i) => '<i class="' + (i < n ? 'on' : '') + '"></i>').join('') + '</div></div>' +
-    '<h3>' + U('rewards') + '</h3>' + rw + '<h3>' + U('places') + '</h3>' + places + '<p class="note">' + U('jRules') + '</p>';
+    (n >= 6 ? '<button type="button" class="btn y" style="width:100%;margin:10px 0" onclick="shareJ()">' + svg('star') + U('shareJ') + '</button>' : '') +
+    '<h3>' + U('rewards') + '</h3>' + rw + '<p class="note">' + U('redeemNote') + '</p><h3>' + U('places') + '</h3>' + places + '<p class="note">' + U('jRules') + '</p>';
 };
 
 // ---------- report a sighting (sends people to the Sensui Marine Sighting Report form) ----------
