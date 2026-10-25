@@ -672,7 +672,7 @@ const boatRow = () => '<div class="grid3">' + tile('boat', 'ferry', '#138a8a', U
 VIEWS.home = () => {
   header('Chumphon Guide', U('appSub')); tabs('home');
   const start = '<h2 class="sec">' + U('startT') + '</h2><div class="grid3">' +
-    tile('sites', 'pin', 'var(--sea)', U('sites'), U('sitesN'), 's') +
+    tile('tour', 'route', '#138a8a', U('cityTour'), '1,800 ' + U('thb'), 's') +
     tile('courses-', 'padi', '#0e2f4a', U('coursesT'), ALLC().length + ' ' + U('coursesN'), 's') +
     tile('list-stay', 'bed', '#7b4bb7', U('stay'), nSec('stay') + ' ' + U('places'), 's') + '</div>';
   return '<div class="hero s" style="background-image:url(' + DATA.img.hero + ')"><h1>Chumphon</h1><p>' + U('heroP') + '</p><span class="k">' + U('heroK') + '</span></div>' +
