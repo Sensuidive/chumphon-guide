@@ -1180,7 +1180,7 @@ let gcFirst = true;
 function gcount() {
   if (!DATA.gc || location.protocol !== 'https:' || window.top !== window) return;
   const v = route.v + (route.v === 'site' || route.v === 'list' ? '-' + route.p : '');
-  const q = 'p=' + encodeURIComponent('/app/' + v) + '&t=' + encodeURIComponent(v) + (gcFirst ? '&r=' + encodeURIComponent(STK ? 'sticker-' + STK : (document.referrer || '').split(/[?#]/)[0]) : '') + '&s=' + screen.width + '&rnd=' + Math.random().toString(36).slice(2);
+  const q = 'p=' + encodeURIComponent('/app/' + v) + '&t=' + encodeURIComponent(v) + (gcFirst ? '&r=' + encodeURIComponent(STK ? 's-' + STK : (document.referrer || '').split(/[?#]/)[0]) : '') + '&s=' + screen.width + '&rnd=' + Math.random().toString(36).slice(2);
   gcFirst = false;
   try { navigator.sendBeacon('https://' + DATA.gc + '.goatcounter.com/count?' + q); } catch (e) { new Image().src = 'https://' + DATA.gc + '.goatcounter.com/count?' + q; }
 }
