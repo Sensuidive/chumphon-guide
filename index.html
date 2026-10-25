@@ -558,7 +558,7 @@ const distLine = x => {
   return '<a class="dist" ' + ext + ' href="https://www.google.com/maps/dir/?api=1&origin=' + (x.lat ? x.lat + ',' + x.lon : encodeURIComponent(x.mq)) + '&destination=' + SHOP.join(',') + '">' + svg('pin') +
     U('approx') + ' ' + dd + ' ' + U('toSensui') + ' · ' + (k < 1 ? Math.max(2, Math.round(k * 1.3 / 5 * 60)) + ' ' + U('walk') : (mins < 60 ? mins + ' ' + U('byCar') : (Math.round(mins / 30) / 2) + ' ' + U('hByCar'))) + '</a>';
 };
-const shopRow = label => '<a class="sc" ' + ext + ' href="' + SHOP_DIR + '">' + svg('pin') + '<span>' + label + '</span><i>' + U('dirs') + '</i></a>';
+const shopRow = label => '<a class="sc" href="#findus">' + svg('pin') + '<span>' + label + '</span><i>' + U('dirs') + '</i></a>';
 const squadCard = () => DATA.squadUrl ? '<a class="squad" ' + ext + ' href="' + esc(DATA.squadUrl) + '"><img src="' + DATA.img.squad + '" alt="Sensui Squad" loading="lazy"><div><b>' + U('squadT') + '</b><p>' + U('squadP') + '</p><i>' + U('squadGo') + ' ›</i></div></a>' : '';
 const findUs = () => '<h3>' + U('findUs') + '</h3><div class="fu"><b>Sensui Dive Center</b><span>' + U('shopAddr') + '</span><span>' + U('transfers') + '</span>' +
   '<a ' + ext + ' href="' + SHOP_DIR + '"><img src="' + DATA.img.shopMap + '" alt="' + U('findUs') + '" loading="lazy"></a>' +
@@ -1146,6 +1146,10 @@ VIEWS.turtles = () => {
 };
 
 let req = { what: 'dsd', from: '', to: '', n: 1, lg: 'English', name: '' };
+// Follow us + Find us + footer: end of Book now, and its own page #findus (every "Find the dive shop" row opens it; Michael 25 Oct)
+const contactEnd = () => '<h3>' + U('follow') + '</h3>' + socRow() + findUs() +
+    '<div class="foot"><span><a ' + ext + ' href="https://sensuidive.com">sensuidive.com</a> · <a href="mailto:info@sensuidive.com">info@sensuidive.com</a></span><span>PADI Dive Center no. 27540 · TAT licence 44/00186</span><span>' + U('privacy') + '</span><span style="font-style:italic;font-weight:700">Go with the flow, Dance with the sea®</span></div>';
+VIEWS.findus = () => { header(U('findUs'), U('appSub'), true); tabs('book'); return contactEnd(); };
 VIEWS.book = () => {
   header(U('bookT'), U('bookSub')); tabs('book');
   const opts = reqOpts(), tour = /^tour/.test(req.what);
@@ -1170,8 +1174,7 @@ VIEWS.book = () => {
     '<h3>' + U('prices') + '</h3><a class="btn y" href="#courses-">' + U('allCourses') + ' ›</a>' +
     '<a class="price" style="--c:#138a8a;text-decoration:none" href="#tour"><div class="l"><b>' + U('cityTour') + ' ›</b><span class="v">' + DATA.tour.price2.toLocaleString('en') + ' <small>' + U('thb') + '</small></span></div><span>' + U('per2') + ' · ' + DATA.tour.price3.toLocaleString('en') + ' ' + U('thb') + ' ' + U('per3') + '</span></a>' +
     '<div class="leaf"><p>' + T(DATA.meals) + '</p></div><p class="note">' + T(DATA.gear) + '</p>' +
-    '<h3>' + U('follow') + '</h3>' + socRow() + findUs() +
-    '<div class="foot"><span><a ' + ext + ' href="https://sensuidive.com">sensuidive.com</a> · <a href="mailto:info@sensuidive.com">info@sensuidive.com</a></span><span>PADI Dive Center no. 27540 · TAT licence 44/00186</span><span>' + U('privacy') + '</span><span style="font-style:italic;font-weight:700">Go with the flow, Dance with the sea®</span></div>';
+    contactEnd();
 };
 function reqOpts() {
   return ALLC().map(c => [c.id, T(c.name).replace(/<[^>]+>/g, '')]).concat([['tourA', U('cityTour') + ' A'], ['tourB', U('cityTour') + ' B'], ['other', U('other')]]);
