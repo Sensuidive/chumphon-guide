@@ -8,6 +8,29 @@
  "theme_color": "#0e2f4a",
  "lang": "en",
  "description": "Free Chumphon guide by Sensui Dive Center: dive site maps, whale shark log, island boats, places to eat, stay and see. Works offline.",
+ "screenshots": [
+  {
+   "src": "shot_home.jpg",
+   "sizes": "1080x2340",
+   "type": "image/jpeg",
+   "form_factor": "narrow",
+   "label": "Home: dive sites, whale shark log, Explore Chumphon"
+  },
+  {
+   "src": "shot_site.jpg",
+   "sizes": "1080x2340",
+   "type": "image/jpeg",
+   "form_factor": "narrow",
+   "label": "Dive site map with depths"
+  },
+  {
+   "src": "shot_boats.jpg",
+   "sizes": "1080x2340",
+   "type": "image/jpeg",
+   "form_factor": "narrow",
+   "label": "Island boat times and fares"
+  }
+ ],
  "icons": [
   {
    "src": "icon-192.png",

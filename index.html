@@ -78,6 +78,8 @@ body.th .btn{font-weight:500}
 .btn.ln{background:var(--lineapp);color:var(--lineink)}
 .btn.o{border:1.5px solid var(--navy);color:var(--navy);background:var(--card)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.offl{position:fixed;left:0;right:0;bottom:calc(64px + env(safe-area-inset-bottom,0px));z-index:40;background:#5a3e00;color:#fff;text-align:center;font-weight:700;font-size:14px;padding:8px 12px}
+.inst.ios{margin:0 0 14px}.boattip{margin:8px 0 0}
 .chk{display:flex;align-items:center;gap:10px;min-height:44px;font-weight:600;margin:2px 0 6px}.chk input{width:22px;height:22px;accent-color:var(--navy,#0e2f4a)}
 .tot{margin:10px 0;background:var(--soft);border-radius:14px;padding:11px 12px;line-height:1.5}.trust{text-align:center;font-size:14px;font-weight:700;color:var(--navy,#0e2f4a);margin:10px 0 4px}
 .seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--sand);border-radius:12px;padding:3px}
@@ -322,6 +324,7 @@ body.th .kv b{font-weight:500}
   <header id="hdr"></header>
   <main id="view"></main>
 </div>
+<div class="offl" id="offl" role="status" hidden></div>
 <nav class="tabs" id="tabs" aria-label="Main"></nav>
 
 <script>
@@ -377,7 +380,7 @@ const ui = {
   route: ['Route', 'เส้นทาง'], bookTour: ['Book this tour', 'จองทัวร์นี้'], journeyHint: ['Each stop also counts for the Journey Log.', 'ทุกจุดนับเป็นแสตมป์ใน Journey Log ด้วย'],
   msgBiz: ['Hi! I found you on the Chumphon Guide app.', 'สวัสดีครับ พบข้อมูลของคุณจากแอป Chumphon Guide'],
   msgHi: ['Hi Sensui! From the Chumphon Guide app:', 'สวัสดีครับ Sensui! จากแอป Chumphon Guide:'],
-  msgPeople: ['people', 'คน'], msgLang: ['language', 'ภาษา'], msgName: ['Name', 'ชื่อ'], msgDates: ['dates', 'วันที่'], whereAlt: ['Map of our 11 dive sites in Mu Ko Chumphon National Park, numbered south to north', 'แผนที่จุดดำน้ำ 11 จุดของเราในอุทยานแห่งชาติหมู่เกาะชุมพร เรียงหมายเลขจากใต้ขึ้นเหนือ'], mapOf: ['Dive site map:', 'แผนที่จุดดำน้ำ'], depthW: ['Depth', 'ความลึก'], moorW: ['mooring lines', 'ทุ่นผูกเรือ'], seeW: ['You can see', 'สิ่งที่จะได้เห็น'], noDates: ['Dates not fixed yet', 'ยังไม่กำหนดวัน'], msgNoDates: ['dates not fixed yet', 'ยังไม่กำหนดวัน'], opt: ['optional', 'ไม่บังคับ'], perP: ['per person', 'ต่อคน'], trustBook: ['Google 5.0 from 69 reviews · PADI Dive Center · max 4 divers per guide', 'Google 5.0 จาก 69 รีวิว · PADI Dive Center · ไกด์ 1 คนดูแลไม่เกิน 4 คน'],
+  msgPeople: ['people', 'คน'], msgLang: ['language', 'ภาษา'], msgName: ['Name', 'ชื่อ'], msgDates: ['dates', 'วันที่'], iosT: ['Add the guide to your iPhone', 'เพิ่มคู่มือไว้บน iPhone'], notNow: ['Not now', 'ไว้ทีหลัง'], offline: ['Offline: maps and boat times still work', 'ออฟไลน์อยู่: แผนที่และเวลาเรือยังใช้ได้'], boatTip: ['Save for the boat: open this page once while you have signal and it keeps working offline at sea. Or tap the map and save the picture.', 'เก็บไว้ดูบนเรือ: เปิดหน้านี้หนึ่งครั้งตอนมีสัญญาณ แล้วจะดูได้แม้ไม่มีสัญญาณกลางทะเล หรือแตะแผนที่แล้วบันทึกรูปไว้'], whereAlt: ['Map of our 11 dive sites in Mu Ko Chumphon National Park, numbered south to north', 'แผนที่จุดดำน้ำ 11 จุดของเราในอุทยานแห่งชาติหมู่เกาะชุมพร เรียงหมายเลขจากใต้ขึ้นเหนือ'], mapOf: ['Dive site map:', 'แผนที่จุดดำน้ำ'], depthW: ['Depth', 'ความลึก'], moorW: ['mooring lines', 'ทุ่นผูกเรือ'], seeW: ['You can see', 'สิ่งที่จะได้เห็น'], noDates: ['Dates not fixed yet', 'ยังไม่กำหนดวัน'], msgNoDates: ['dates not fixed yet', 'ยังไม่กำหนดวัน'], opt: ['optional', 'ไม่บังคับ'], perP: ['per person', 'ต่อคน'], trustBook: ['Google 5.0 from 69 reviews · PADI Dive Center · max 4 divers per guide', 'Google 5.0 จาก 69 รีวิว · PADI Dive Center · ไกด์ 1 คนดูแลไม่เกิน 4 คน'],
   emerg: ['Emergency: 1669 medical · 191 police · 1155 tourist police', 'ฉุกเฉิน: 1669 การแพทย์ · 191 ตำรวจ · 1155 ตำรวจท่องเที่ยว'],
   jlog: ['Journey Log', 'บันทึกการเดินทาง'], jSub: ['9 places · rewards at 3, 6 and 9', 'เที่ยว 9 แห่ง · รับรางวัลเมื่อครบ 3, 6 และ 9 แห่ง'],
   jProg: ['places done. {n} to go.', 'แห่งที่ไปแล้ว เหลืออีก {n} แห่ง'], jAll: ['Journey complete! Show this screen at Sensui.', 'ครบทุกแห่งแล้ว! แสดงหน้าจอนี้ที่ Sensui'],
@@ -624,7 +627,7 @@ VIEWS.home = () => {
   header('Chumphon Guide', U('appSub')); tabs('home');
   return '<div class="hero" style="background-image:url(' + DATA.img.hero + ')"><span class="k">' + U('heroK') + '</span><h1>Chumphon</h1><p>' + U('heroP') + '</p></div>' +
     '<form class="search" onsubmit="event.preventDefault();go(\'search-\'+encodeURIComponent(this.q.value))">' + svg('search') + '<input id="q" name="q" type="search" placeholder="' + U('search') + '" aria-label="' + U('search') + '"></form>' +
-    (CLOSED ? '<div class="season"><div><b>' + U('seasonB') + '</b><p>' + U('seasonP') + '</p></div><a href="#book">' + U('reserve') + '</a></div>' : '') +
+    iosCard() + (CLOSED ? '<div class="season"><div><b>' + U('seasonB') + '</b><p>' + U('seasonP') + '</p></div><a href="#book">' + U('reserve') + '</a></div>' : '') +
     '<h3>' + U('diveT') + '</h3><div class="grid3">' +
     tile('sites', 'pin', 'var(--sea)', U('sites'), U('sitesN'), 's') +
     tile('courses-', 'padi', '#0e2f4a', U('coursesT'), ALLC().length + ' ' + U('coursesN'), 's') +
@@ -644,6 +647,7 @@ const isIOS = () => /iphone|ipad|ipod/i.test(navigator.userAgent) || (navigator.
 function installCard() {
   if (standalone()) return '';
   const k = instKey(), android = /Android/.test(navigator.userAgent);
+  if (k === 'instIOS') return '';   // iPhone Safari: the picture card near the top does it (iosCard)
   // Android outside Chrome (Samsung Internet, LINE, Facebook...): jump to Chrome, where one-tap install works
   const toChrome = !instEvt && android && /instInApp|instSamsung|instOther/.test(k);
   const btn = instEvt ? '<button type="button" onclick="doInstall()">' + U('inst') + '</button>'
@@ -660,6 +664,17 @@ function iosSteps(k) {
   const ok = '<svg viewBox="0 0 48 48"><rect x="4" y="4" width="40" height="40" rx="10" fill="#fff"/><text x="24" y="29" text-anchor="middle" font-size="13" font-weight="800" fill="#1f7fb8" font-family="sans-serif">' + U('iosAddBtn') + '</text></svg>';
   const st = (n, pic, t) => '<div class="istep"><i>' + n + '</i>' + pic + '<span>' + t + '</span></div>';
   return '<div class="isteps">' + st(1, sh, U(k === 'instIOSChrome' ? 'iosS1c' : 'iosS1')) + st(2, add, U('iosS2')) + st(3, ok, U('iosS3')) + '</div>';
+}
+// iPhone Safari only: 3-step picture card after the 2nd visit or after a booking message (plan item 5); "Not now" hides it 14 days
+const LS = { get: k => { try { return localStorage.getItem(k); } catch (e) { return null; } }, set: (k, v) => { try { localStorage.setItem(k, v); } catch (e) {} } };
+(() => { try { if (!sessionStorage.getItem('cg_s')) { sessionStorage.setItem('cg_s', '1'); LS.set('cg_visits', String(+(LS.get('cg_visits') || 0) + 1)); } } catch (e) {} })();
+const markSent = () => LS.set('cg_sent', '1');
+function iosCard() {
+  if (standalone() || instKey() !== 'instIOS') return '';
+  if (!(+(LS.get('cg_visits') || 0) >= 2 || LS.get('cg_sent'))) return '';
+  if (Date.now() - +(LS.get('cg_iosno') || 0) < 14 * 864e5) return '';
+  return '<div class="inst ios"><img src="icon-192.png" alt="" width="52" height="52" onerror="this.src=DATA.img.logo"><div><b>' + U('iosT') + '</b><p>' + U('instSub') + '</p></div>' + iosSteps('instIOS') +
+    '<button type="button" class="ghost" onclick="LS.set(\'cg_iosno\',Date.now());render()">' + U('notNow') + '</button></div>';
 }
 // which steps to show when the phone gives no one-tap install (iPhone, Samsung Internet, in-app browsers, older Chrome)
 function instKey() {
@@ -701,7 +716,7 @@ VIEWS.site = id => {
   const last = seen.length ? seen.slice().sort((a, b) => (b.y - a.y) || (b.m - a.m) || (b.d - a.d))[0] : null;
   const hasWS = s.see.some(x => /whale/i.test(x.en)) || seen.length;
   return '<a class="imgbox" ' + ext + ' href="' + s.img[lang] + '"><img src="' + s.img[lang] + '" alt="' + esc(mapAlt(s)) + '" width="900" height="1125" loading="lazy" decoding="async"></a>' +
-    '<p class="note">' + U('tapMap') + '</p>' +
+    '<p class="note">' + U('tapMap') + '</p><p class="note boattip">' + U('boatTip') + '</p>' +
     '<div><h1>' + esc(T(s.name)) + '</h1>' + (s.aka && T(s.aka) ? '<div class="note">' + esc(T(s.aka)) + '</div>' : '') + '</div>' +
     '<div class="chips"><span class="chip">' + chips[0] + '</span>' + lvChip(s.level) + chips.slice(1).map(c => '<span class="chip">' + esc(c) + '</span>').join('') + '</div>' +
     '<p>' + esc(T(s.desc)) + '</p><h3>' + U('seeT') + '</h3><div class="see">' + s.see.map(x => '<div>' + esc(T(x)) + '</div>').join('') + '</div>' +
@@ -995,7 +1010,7 @@ function boatText() {
 }
 function sendBoat(a, k) {
   if (!boat.name.trim()) { document.getElementById('b_err').hidden = false; document.getElementById('b_name').focus(); return false; }
-  a.href = k === 'wa' ? waHref(WA, boatText()) : lineHref(LINE_ID, boatText()); return true; }
+  a.href = k === 'wa' ? waHref(WA, boatText()) : lineHref(LINE_ID, boatText()); markSent(); return true; }
 const SOC = [['Facebook', 'https://www.facebook.com/sensuidiveresort', '#1877f2'], ['Instagram', 'https://www.instagram.com/sensui_dive/', '#c13584'],
   ['TikTok', 'https://www.tiktok.com/@sensuidive', '#111'], ['YouTube', 'https://www.youtube.com/@sensuidivecenter', '#e62117']];
 const socRow = () => '<div class="soc">' + SOC.map(([n, h, c]) => '<a ' + ext + ' href="' + h + '" style="background:' + c + '">' + n + '</a>').join('') + '</div>';
@@ -1092,12 +1107,15 @@ function reqText() {
 }
 function sendReq(a, k) {
   if (!req.name.trim()) { const e = document.getElementById('r_err'); e.hidden = false; document.getElementById('r_name').focus(); return false; }
-  a.href = k === 'wa' ? waHref(WA, reqText()) : lineHref(LINE_ID, reqText()); return true; }
+  a.href = k === 'wa' ? waHref(WA, reqText()) : lineHref(LINE_ID, reqText()); markSent(); return true; }
 function cp(b, t) {
   const done = () => { b.textContent = U('copied'); };
   const sel = () => { const r = document.createRange(); r.selectNodeContents(b.previousElementSibling || b); const g = getSelection(); g.removeAllRanges(); g.addRange(r); };
   try { navigator.clipboard.writeText(t).then(done, sel); } catch (e) { sel(); }
 }
 
-parse(); render();
+// offline banner (plan item 5)
+function offl() { const e = document.getElementById('offl'); if (!e) return; e.hidden = navigator.onLine !== false; e.textContent = U('offline'); }
+addEventListener('online', offl); addEventListener('offline', offl);
+parse(); render(); offl();
 </script>
