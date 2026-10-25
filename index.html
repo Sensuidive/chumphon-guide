@@ -1159,7 +1159,7 @@ VIEWS.book = () => {
   const waB = '<a class="btn wa" ' + ext + ' href="#" onclick="return sendReq(this,\'wa\')">' + WA_SVG + U('sendWA') + '</a>', lnB = '<a class="btn ln" ' + ext + ' href="#" onclick="return sendReq(this,\'ln\')">' + LN_SVG + U('sendLN') + '</a>';
   const price = c => '<div class="price" style="--c:' + c.col + '"><div class="l"><b>' + esc(T(c.name)) + '</b><span class="v">' + esc(T(c.price)) + ' <small>' + U('thb') + '</small></span></div><span>' + esc(T(c.desc)) + '</span></div>';
   return '<p>' + U('about') + '</p>' +
-    (CLOSED ? '<div class="season"><div><b>' + U('closed') + '</b><p>' + U('closedP') + '</p></div></div>' : '') + shopRow(U('shopShort')) +
+    (CLOSED ? '<div class="season"><div><b>' + U('closed') + '</b><p>' + U('closedP') + '</p></div></div>' : '') + shopRow(U('findShop')) +
     '<form class="form card" onsubmit="event.preventDefault()"><h2>' + U('request') + '</h2>' +
     '<div class="fld"><label for="r_what">' + U('what') + '</label><select id="r_what" onchange="req.what=this.value;render()">' + opts.map((o, k) => '<option value="' + o[0] + '"' + (o[0] === req.what ? ' selected' : '') + '>' + esc(o[1]) + '</option>').join('') + '</select></div>' +
     '<label class="chk"><input type="checkbox" id="r_nod"' + (req.nod ? ' checked' : '') + ' onchange="req.nod=this.checked;render()"> ' + U('noDates') + '</label>' +
