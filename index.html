@@ -1175,7 +1175,7 @@ function cp(b, t) {
 }
 
 // visit counter (GoatCounter, plan item 9): only on the real site, no cookies; sends the view name and the sticker ending, never ?c=
-const STK = (location.search.match(/[?&]s=(station|pier|cafe|shop|boat)\b/) || [])[1] || '';
+const STK = (location.search.match(/[?&]s=([a-z]{2,12})\b/) || [])[1] || '';
 let gcFirst = true;
 function gcount() {
   if (!DATA.gc || location.protocol !== 'https:' || window.top !== window) return;
