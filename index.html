@@ -122,6 +122,7 @@ html{scroll-padding-bottom:calc(84px + env(safe-area-inset-bottom,0px))}
 .sc svg{width:16px;height:16px;flex:none;color:var(--sea)}
 .sc span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .sc i{font-style:normal;flex:none;background:var(--navy);color:#fff;font-weight:800;font-size:14px;padding:6px 10px;border-radius:999px}
+.sc .go{flex:none;font-size:22px;line-height:1;color:var(--muted);padding:0 4px}
 .season{background:var(--navy);color:#fff;border-radius:16px;padding:12px 14px;display:flex;gap:12px;align-items:center}
 .season b{color:var(--yel);font-weight:800;font-size:14px;display:block}
 .season p{color:#d7e4ed;font-size:14px}
@@ -558,7 +559,7 @@ const distLine = x => {
   return '<a class="dist" ' + ext + ' href="https://www.google.com/maps/dir/?api=1&origin=' + (x.lat ? x.lat + ',' + x.lon : encodeURIComponent(x.mq)) + '&destination=' + SHOP.join(',') + '">' + svg('pin') +
     U('approx') + ' ' + dd + ' ' + U('toSensui') + ' · ' + (k < 1 ? Math.max(2, Math.round(k * 1.3 / 5 * 60)) + ' ' + U('walk') : (mins < 60 ? mins + ' ' + U('byCar') : (Math.round(mins / 30) / 2) + ' ' + U('hByCar'))) + '</a>';
 };
-const shopRow = label => '<a class="sc" href="#findus">' + svg('pin') + '<span>' + label + '</span><i>' + U('dirs') + '</i></a>';
+const shopRow = label => '<a class="sc" href="#findus">' + svg('pin') + '<span>' + label + '</span><b class="go" aria-hidden="true">›</b></a>';
 const squadCard = () => DATA.squadUrl ? '<a class="squad" ' + ext + ' href="' + esc(DATA.squadUrl) + '"><img src="' + DATA.img.squad + '" alt="Sensui Squad" loading="lazy"><div><b>' + U('squadT') + '</b><p>' + U('squadP') + '</p><i>' + U('squadGo') + ' ›</i></div></a>' : '';
 const findUs = () => '<h3>' + U('findUs') + '</h3><div class="fu"><b>Sensui Dive Center</b><span>' + U('shopAddr') + '</span><span>' + U('transfers') + '</span>' +
   '<a ' + ext + ' href="' + SHOP_DIR + '"><img src="' + DATA.img.shopMap + '" alt="' + U('findUs') + '" loading="lazy"></a>' +
