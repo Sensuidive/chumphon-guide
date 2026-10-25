@@ -75,6 +75,8 @@ body.th .btn{font-weight:500}
 .btn.ln{background:var(--lineapp);color:var(--lineink)}
 .btn.o{border:1.5px solid var(--navy);color:var(--navy);background:var(--card)}
 .row2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chk{display:flex;align-items:center;gap:10px;min-height:44px;font-weight:600;margin:2px 0 6px}.chk input{width:22px;height:22px;accent-color:var(--navy,#0e2f4a)}
+.tot{margin:10px 0;background:var(--soft);border-radius:14px;padding:11px 12px;line-height:1.5}.trust{text-align:center;font-size:14px;font-weight:700;color:var(--navy,#0e2f4a);margin:10px 0 4px}
 .seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--sand);border-radius:12px;padding:3px}
 .seg button{border:0;background:none;padding:8px 4px;border-radius:10px;font-weight:700;font-size:12.5px;color:var(--muted);cursor:pointer}
 .seg button.on{background:var(--card);color:var(--navy);box-shadow:0 1px 2px rgba(14,47,74,.15)}
@@ -370,7 +372,7 @@ const ui = {
   route: ['Route', 'เส้นทาง'], bookTour: ['Book this tour', 'จองทัวร์นี้'], journeyHint: ['Each stop also counts for the Journey Log.', 'ทุกจุดนับเป็นแสตมป์ใน Journey Log ด้วย'],
   msgBiz: ['Hi! I found you on the Chumphon Guide app.', 'สวัสดีครับ พบข้อมูลของคุณจากแอป Chumphon Guide'],
   msgHi: ['Hi Sensui! From the Chumphon Guide app:', 'สวัสดีครับ Sensui! จากแอป Chumphon Guide:'],
-  msgPeople: ['people', 'คน'], msgLang: ['language', 'ภาษา'], msgName: ['Name', 'ชื่อ'], msgDates: ['dates', 'วันที่'],
+  msgPeople: ['people', 'คน'], msgLang: ['language', 'ภาษา'], msgName: ['Name', 'ชื่อ'], msgDates: ['dates', 'วันที่'], noDates: ['Dates not fixed yet', 'ยังไม่กำหนดวัน'], msgNoDates: ['dates not fixed yet', 'ยังไม่กำหนดวัน'], opt: ['optional', 'ไม่บังคับ'], perP: ['per person', 'ต่อคน'], trustBook: ['Google 5.0 from 69 reviews · PADI Dive Center · max 4 divers per guide', 'Google 5.0 จาก 69 รีวิว · PADI Dive Center · ไกด์ 1 คนดูแลไม่เกิน 4 คน'],
   emerg: ['Emergency: 1669 medical · 191 police · 1155 tourist police', 'ฉุกเฉิน: 1669 การแพทย์ · 191 ตำรวจ · 1155 ตำรวจท่องเที่ยว'],
   jlog: ['Journey Log', 'บันทึกการเดินทาง'], jSub: ['9 places · rewards at 3, 6 and 9', 'เที่ยว 9 แห่ง · รับรางวัลเมื่อครบ 3, 6 และ 9 แห่ง'],
   jProg: ['places done. {n} to go.', 'แห่งที่ไปแล้ว เหลืออีก {n} แห่ง'], jAll: ['Journey complete! Show this screen at Sensui.', 'ครบทุกแห่งแล้ว! แสดงหน้าจอนี้ที่ Sensui'],
@@ -569,7 +571,9 @@ window.addEventListener('hashchange', () => { parse(); render(); });
 const lvChip = l => '<span class="chip ' + l + '">' + U(l === 'ow' ? 'ow' : l === 'adv' ? 'adv' : 'allLv') + '</span>';
 const depth = s => s.id === 'suntud' ? T(s.chips[1]) + ', ' + U('max').toLowerCase() + ' ' + s.maxd + ' ' + U('m') : (s.mind ? s.mind + '-' + s.maxd + ' ' + U('m') : U('max') + ' ' + s.maxd + ' ' + U('m'));
 const wsFor = s => DATA.ws.filter(r => s.ws.includes(r.s));
-const bookBtns = text => '<div class="row2"><a class="btn wa" ' + ext + ' href="' + waHref(WA, text) + '">' + WA_SVG + 'WhatsApp</a><a class="btn ln" ' + ext + ' href="' + lineHref(LINE_ID, text) + '">' + LN_SVG + 'LINE</a></div>';
+// LINE first in Thai, WhatsApp first in English (Michael 25 Oct)
+const chatPair = (w, l) => lang === 'th' ? l + w : w + l;
+const bookBtns = text => '<div class="row2">' + chatPair('<a class="btn wa" ' + ext + ' href="' + waHref(WA, text) + '">' + WA_SVG + 'WhatsApp</a>', '<a class="btn ln" ' + ext + ' href="' + lineHref(LINE_ID, text) + '">' + LN_SVG + 'LINE</a>') + '</div>';
 const wsBox = extra => '<div class="ws">' + svg('shark') + '<p>' + U('wsLine') + (extra ? ' ' + extra : '') + '<small>' + U('promise') + '</small></p></div>';
 const safety = () => '<div class="safety">' + svg('warn') + '<p>' + U('chamber') + '</p></div>';
 
@@ -764,7 +768,7 @@ VIEWS.tour = () => {
 // ---------- courses ----------
 const ALLC = () => DATA.cgroups.flatMap(g => g.items);
 const courseCard = c => '<div class="price" style="--c:' + c.col + '"><div class="l"><b>' + esc(T(c.name)) + '</b><span class="v">' + T(c.price) + ' <small>' + U('thb') + '</small></span></div><span>' + esc(T(c.desc)) + '</span>' +
-  '<div class="acts" style="margin-top:6px"><a class="call" href="#book" onclick="req.what=\'' + c.id + '\'">' + U('bookThis') + '</a><a class="wa" ' + ext + ' href="' + waHref(WA, U('msgHi') + ' ' + T(c.name).replace(/<[^>]+>/g, '')) + '">WhatsApp</a><a class="ln" ' + ext + ' href="' + lineHref(LINE_ID, U('msgHi') + ' ' + T(c.name).replace(/<[^>]+>/g, '')) + '">LINE</a></div></div>';
+  '<div class="acts" style="margin-top:6px"><a class="call" href="#book" onclick="req.what=\'' + c.id + '\'">' + U('bookThis') + '</a>' + chatPair('<a class="wa" ' + ext + ' href="' + waHref(WA, U('msgHi') + ' ' + T(c.name).replace(/<[^>]+>/g, '')) + '">WhatsApp</a>', '<a class="ln" ' + ext + ' href="' + lineHref(LINE_ID, U('msgHi') + ' ' + T(c.name).replace(/<[^>]+>/g, '')) + '">LINE</a>') + '</div></div>';
 let cg = '';
 VIEWS.courses = g => {
   if (g !== undefined) cg = DATA.cgroups.some(x => x.id === g) ? g : '';
@@ -961,7 +965,7 @@ VIEWS.boat = () => {
     (legLine() ? '<div class="ws">' + svg('wave') + '<p><b>' + legLine().map(esc).join('<br>') + '</b></p></div>' : '') +
     '<div class="price" style="--c:#138a8a"><span id="b_price">' + priceLine() + '</span></div>' +
     '<div class="fld"><label for="b_name">' + U('yourName') + '</label><input id="b_name" type="text" value="' + esc(boat.name) + '" oninput="boat.name=this.value;document.getElementById(\'b_err\').hidden=true" autocomplete="name"><span class="msg" id="b_err" hidden>' + U('needName') + '</span></div>' +
-    '<div class="row2"><a class="btn wa" ' + ext + ' href="#" onclick="return sendBoat(this,\'wa\')">' + WA_SVG + U('sendWA') + '</a><a class="btn ln" ' + ext + ' href="#" onclick="return sendBoat(this,\'ln\')">' + LN_SVG + U('sendLN') + '</a></div>' +
+    '<div class="row2">' + chatPair('<a class="btn wa" ' + ext + ' href="#" onclick="return sendBoat(this,\'wa\')">' + WA_SVG + U('sendWA') + '</a>', '<a class="btn ln" ' + ext + ' href="#" onclick="return sendBoat(this,\'ln\')">' + LN_SVG + U('sendLN') + '</a>') + '</div>' +
     '<p class="note">' + U('reqNote') + '</p></form>';
 };
 // "Leaves Chumphon 07:00 · arrives Koh Samui 11:15" for the chosen trip
@@ -1000,7 +1004,7 @@ VIEWS.fix = p => {
   return '<p>' + U('fixP') + '</p>' + (x ? placeCard(x).replace(/<a class="fixl"[^]*?<\/a>/, '') : '<div class="card"><b>' + U('fixApp') + '</b></div>') +
     '<h3>' + U('fixWhat') + '</h3><div class="kinds">' + why.map(k => '<button class="' + (fix.r === k ? 'on' : '') + '" onclick="fix.r=\'' + k + '\';render()">' + U('fx_' + k) + '</button>').join('') + '</div>' +
     '<form class="form card" onsubmit="event.preventDefault()"><div class="fld"><label for="f_note">' + U('fixNote') + '</label><textarea id="f_note" rows="3" oninput="fix.note=this.value">' + esc(fix.note) + '</textarea></div>' +
-    '<div class="row2"><a class="btn wa" ' + ext + ' href="#" onclick="return sendFix(this,\'wa\')">' + WA_SVG + 'WhatsApp</a><a class="btn ln" ' + ext + ' href="#" onclick="return sendFix(this,\'ln\')">' + LN_SVG + 'LINE</a></div></form>';
+    '<div class="row2">' + chatPair('<a class="btn wa" ' + ext + ' href="#" onclick="return sendFix(this,\'wa\')">' + WA_SVG + 'WhatsApp</a>', '<a class="btn ln" ' + ext + ' href="#" onclick="return sendFix(this,\'ln\')">' + LN_SVG + 'LINE</a>') + '</div></form>';
 };
 function fixText() {
   const x = fixPlace(route.p);
@@ -1039,15 +1043,19 @@ VIEWS.book = () => {
   const opts = reqOpts(), tour = /^tour/.test(req.what);
   if (!req.nt) req.n = tour ? 2 : 1;   // city tour minimum 2 people; diving has no minimum
   const lgs = ['English', '中文', 'ไทย', 'Melayu'];
+  const waB = '<a class="btn wa" ' + ext + ' href="#" onclick="return sendReq(this,\'wa\')">' + WA_SVG + U('sendWA') + '</a>', lnB = '<a class="btn ln" ' + ext + ' href="#" onclick="return sendReq(this,\'ln\')">' + LN_SVG + U('sendLN') + '</a>';
   const price = c => '<div class="price" style="--c:' + c.col + '"><div class="l"><b>' + esc(T(c.name)) + '</b><span class="v">' + esc(T(c.price)) + ' <small>' + U('thb') + '</small></span></div><span>' + esc(T(c.desc)) + '</span></div>';
   return '<p>' + U('about') + '</p>' +
     (CLOSED ? '<div class="season"><div><b>' + U('closed') + '</b><p>' + U('closedP') + '</p></div></div>' : '') + shopRow(U('shopShort')) +
     '<form class="form card" onsubmit="event.preventDefault()"><h2>' + U('request') + '</h2>' +
     '<div class="fld"><label for="r_what">' + U('what') + '</label><select id="r_what" onchange="req.what=this.value;render()">' + opts.map((o, k) => '<option value="' + o[0] + '"' + (o[0] === req.what ? ' selected' : '') + '>' + esc(o[1]) + '</option>').join('') + '</select></div>' +
-    '<div class="fr2"><div class="fld"><label for="r_from">' + U('from') + '</label>' + dateBtn('r_from', 'req.from') + '</div><div class="fld"><label for="r_to">' + U('to') + '</label>' + dateBtn('r_to', 'req.to') + '</div></div>' + calPanel(['req.from', 'req.to']) +
-    '<div class="fr2"><div class="fld"><label for="r_n">' + U('people') + '</label><input id="r_n" type="number" min="' + (tour ? 2 : 1) + '" max="30" value="' + req.n + '" onchange="req.n=Math.max(+this.min,+this.value||1);this.value=req.n;req.nt=true"></div><div class="fld"><label for="r_lg">' + U('lessonLang') + '</label><select id="r_lg" onchange="req.lg=this.value">' + lgs.map(l => '<option' + (l === req.lg ? ' selected' : '') + '>' + l + '</option>').join('') + '</select></div></div>' +
+    '<label class="chk"><input type="checkbox" id="r_nod"' + (req.nod ? ' checked' : '') + ' onchange="req.nod=this.checked;render()"> ' + U('noDates') + '</label>' +
+    (req.nod ? '' : '<div class="fr2"><div class="fld"><label for="r_from">' + U('from') + '</label>' + dateBtn('r_from', 'req.from') + '</div><div class="fld"><label for="r_to">' + U('to') + ' <small>(' + U('opt') + ')</small></label>' + dateBtn('r_to', 'req.to') + '</div></div>' + calPanel(['req.from', 'req.to'])) +
+    '<div class="fr2"><div class="fld"><label for="r_n">' + U('people') + '</label><input id="r_n" type="number" min="' + (tour ? 2 : 1) + '" max="30" value="' + req.n + '" onchange="req.n=Math.max(+this.min,+this.value||1);this.value=req.n;req.nt=true;render()"></div><div class="fld"><label for="r_lg">' + U('lessonLang') + '</label><select id="r_lg" onchange="req.lg=this.value">' + lgs.map(l => '<option' + (l === req.lg ? ' selected' : '') + '>' + l + '</option>').join('') + '</select></div></div>' +
     '<div class="fld"><label for="r_name">' + U('yourName') + '</label><input id="r_name" type="text" required value="' + esc(req.name) + '" oninput="req.name=this.value;document.getElementById(\'r_err\').hidden=true" autocomplete="name"><span class="msg" id="r_err" hidden>' + U('needName') + '</span></div>' +
-    '<div class="row2"><a class="btn wa" ' + ext + ' href="#" onclick="return sendReq(this,\'wa\')">' + WA_SVG + U('sendWA') + '</a><a class="btn ln" ' + ext + ' href="#" onclick="return sendReq(this,\'ln\')">' + LN_SVG + U('sendLN') + '</a></div>' +
+    '<div class="tot">' + reqPriceLine() + '</div>' +
+    '<div class="row2">' + chatPair(waB, lnB) + '</div>' +
+    '<p class="trust">' + U('trustBook') + '</p>' +
     '<p class="note">' + U('reqNote') + '</p></form>' +
     '<div class="copy"><span>WhatsApp +66 92 895 3958</span><button onclick="cp(this,\'+66 92 895 3958\')">' + U('copy') + '</button></div>' +
     '<div class="copy"><span>LINE ' + LINE_ID + '</span><button onclick="cp(this,\'' + LINE_ID + '\')">' + U('copy') + '</button></div>' +
@@ -1060,10 +1068,20 @@ VIEWS.book = () => {
 function reqOpts() {
   return ALLC().map(c => [c.id, T(c.name).replace(/<[^>]+>/g, '')]).concat([['tourA', U('cityTour') + ' A'], ['tourB', U('cityTour') + ' B'], ['other', U('other')]]);
 }
+// price per person for the picked service (first number of the listed price); null = we reply with the price
+function reqPP() {
+  if (/^tour/.test(req.what)) return req.n >= 3 ? DATA.tour.price3 : DATA.tour.price2;
+  const c = ALLC().find(x => x.id === req.what); if (!c) return null;
+  const m = String(T(c.price)).match(/\d[\d,]*/); return m ? +m[0].replace(/,/g, '') : null;
+}
+function reqPriceLine() {
+  const pp = reqPP(); if (pp == null) return U('bAsk');
+  return U('bPrice') + ': ' + thb(pp) + ' ' + U('perP') + ' × ' + req.n + ' = <b>' + U('bTotal') + ' ' + thb(pp * req.n) + '</b>';
+}
 function reqText() {
   const opts = Object.fromEntries(reqOpts());
-  const dates = [req.from, req.to].filter(Boolean).join(' - ');
-  return U('msgHi') + ' ' + opts[req.what] + ', ' + req.n + ' ' + U('msgPeople') + (dates ? ', ' + U('msgDates') + ' ' + dates : '') + ', ' + U('msgLang') + ' ' + req.lg + '. ' + U('msgName') + ': ' + req.name.trim();
+  const dates = req.nod ? '' : [req.from, req.to].filter(Boolean).join(' - ');
+  return U('msgHi') + ' ' + opts[req.what] + ', ' + req.n + ' ' + U('msgPeople') + (req.nod ? ', ' + U('msgNoDates') : dates ? ', ' + U('msgDates') + ' ' + dates : '') + ', ' + U('msgLang') + ' ' + req.lg + '. ' + U('msgName') + ': ' + req.name.trim();
 }
 function sendReq(a, k) {
   if (!req.name.trim()) { const e = document.getElementById('r_err'); e.hidden = false; document.getElementById('r_name').focus(); return false; }
