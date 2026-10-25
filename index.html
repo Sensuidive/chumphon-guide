@@ -327,6 +327,8 @@ const WA = '66928953958', LINE_ID = '@740kzdyy', FORM = 'https://docs.google.com
 const CHAMBER = '077 542 555';
 let lang = 'en';
 try { lang = localStorage.getItem('cg_lang') || ((navigator.language || '').toLowerCase().startsWith('th') ? 'th' : 'en'); } catch (e) {}
+// ?lang=th|en from the static guide pages wins once and is remembered
+try { const q = (location.search.match(/[?&]lang=(en|th)\b/) || [])[1]; if (q) { lang = q; localStorage.setItem('cg_lang', q); } } catch (e) {}
 const ui = {
   appSub: ['by Sensui Dive Center', 'โดย Sensui Dive Center'],
   heroK: ['GUIDE', 'คู่มือ'], heroP: ["Maps, depths and what you'll see at every dive site", 'แผนที่ ความลึก และสิ่งที่จะได้เห็นทุกจุดดำน้ำ'],
