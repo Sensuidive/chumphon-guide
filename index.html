@@ -1098,7 +1098,7 @@ function boatText() {
 function sendBoat(a, k) {
   if (!boat.name.trim()) { document.getElementById('b_err').hidden = false; document.getElementById('b_name').focus(); return false; }
   a.href = k === 'wa' ? waHref(WA, boatText()) : lineHref(LINE_ID, boatText()); markSent(); return true; }
-const SOC = [['Facebook', 'https://www.facebook.com/sensuidiveresort', '#1877f2'], ['Instagram', 'https://www.instagram.com/sensui_dive/', '#c13584'],
+const SOC = [['Facebook', 'https://www.facebook.com/sensuidivecenter', '#1877f2'], ['Instagram', 'https://www.instagram.com/sensui_dive/', '#c13584'],
   ['TikTok', 'https://www.tiktok.com/@sensuidive', '#111'], ['YouTube', 'https://www.youtube.com/@sensuidivecenter', '#e62117']];
 const socRow = () => '<div class="soc">' + SOC.map(([n, h, c]) => '<a ' + ext + ' href="' + h + '" style="background:' + c + '">' + n + '</a>').join('') + '</div>';
 
