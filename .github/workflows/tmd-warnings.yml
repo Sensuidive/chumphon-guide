@@ -14,7 +14,7 @@ jobs:
         env:
           TMD_UID: ${{ secrets.TMD_UID }}
           TMD_UKEY: ${{ secrets.TMD_UKEY }}
-      - run: if [ $(( $(date -u +%H) % 3 )) -eq 0 ] || [ "${{ github.event_name }}" != "schedule" ]; then python3 tools/tmd_forecast.py; fi
+      - run: if [ $(( 10#$(date -u +%H) % 3 )) -eq 0 ] || [ "${{ github.event_name }}" != "schedule" ]; then python3 tools/tmd_forecast.py; fi
         env:
           TMD_TOKEN: ${{ secrets.TMD_TOKEN }}
       - run: |
