@@ -6,7 +6,7 @@ from datetime import datetime, timedelta, timezone
 uid, key = os.environ.get('TMD_UID'), os.environ.get('TMD_UKEY')
 if not uid or not key: sys.exit('no TMD keys yet')
 url = 'https://data.tmd.go.th/api/WeatherWarningNews/v1/?uid=%s&ukey=%s&format=json' % (uid, key)
-d = json.load(urllib.request.urlopen(url, timeout=60))
+d = json.load(urllib.request.urlopen(urllib.request.Request(url, headers={'User-Agent': 'Mozilla/5.0 (ChumphonGuide; info@sensuidive.com)'}), timeout=60))
 w = d.get('WarningNews') or []
 w = w if isinstance(w, list) else [w]
 now = datetime.now(timezone(timedelta(hours=7)))
