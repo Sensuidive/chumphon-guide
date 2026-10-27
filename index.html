@@ -769,7 +769,7 @@ const siteNav = i => '<div class="snav"><button type="button" aria-label="' + U(
   DATA.sites.map((x, k) => '<i' + (k === i ? ' class="on"' : '') + '></i>').join('') + '</span><button type="button" aria-label="' + U('nextSite') + '"' + (i < DATA.sites.length - 1 ? '' : ' disabled') + ' onclick="goSite(1)">›</button></div>';
 (() => {
   let x0 = null, y0 = 0, t0 = 0;
-  document.addEventListener('touchstart', e => { const cx = e.touches[0].clientX; x0 = e.touches.length === 1 && /^#site-/.test(location.hash) && cx > 24 && cx < innerWidth - 24 ? cx : null;   // screen edges = phone back gesture y0 = x0 === null ? 0 : e.touches[0].clientY; t0 = Date.now(); }, { passive: true });
+  document.addEventListener('touchstart', e => { const cx = e.touches[0].clientX; x0 = e.touches.length === 1 && /^#site-/.test(location.hash) && cx > 24 && cx < innerWidth - 24 ? cx : null; /* screen edges = phone back gesture */ y0 = x0 === null ? 0 : e.touches[0].clientY; t0 = Date.now(); }, { passive: true });
   document.addEventListener('touchend', e => {
     if (x0 === null) return;
     const t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
