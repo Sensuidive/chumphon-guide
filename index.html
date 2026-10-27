@@ -83,7 +83,7 @@ body.th .btn{font-weight:500}
 .otag{display:table;margin-top:4px;font-size:14px;font-weight:700;color:#9a3b1f}.otag.on{color:#137a3f}
 .scrollx .chip svg{width:15px;height:15px;vertical-align:-2px;margin-right:4px}
 .offl{position:fixed;left:0;right:0;bottom:calc(64px + env(safe-area-inset-bottom,0px));z-index:40;background:#5a3e00;color:#fff;text-align:center;font-weight:700;font-size:14px;padding:8px 12px}
-.inst.ios{margin:0 0 14px}.boattip{margin:8px 0 0}
+.inst.ios{margin:0 0 14px}.boattip{margin:8px 0 0}.mapnote{margin:8px 0 14px}
 .chk{display:flex;align-items:center;gap:10px;min-height:44px;font-weight:600;margin:2px 0 6px}.chk input{width:22px;height:22px;accent-color:var(--navy,#0e2f4a)}
 .tot{margin:10px 0;background:var(--soft);border-radius:14px;padding:11px 12px;line-height:1.5}.trust{text-align:center;font-size:14px;font-weight:700;color:var(--navy,#0e2f4a);margin:10px 0 4px}
 .seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--sand);border-radius:12px;padding:3px}
@@ -770,7 +770,7 @@ VIEWS.site = id => {
   const last = seen.length ? seen.slice().sort((a, b) => (b.y - a.y) || (b.m - a.m) || (b.d - a.d))[0] : null;
   const hasWS = s.see.some(x => /whale/i.test(x.en)) || seen.length;
   return '<div class="imgbox"><img src="' + s.img[lang] + '" alt="' + esc(mapAlt(s)) + '" width="900" height="1125" loading="lazy" decoding="async"></div>' +
-    '<p class="note">' + U('tapMap') + '</p><p class="note boattip">' + U('boatTip') + '</p>' +
+    '<p class="note mapnote">' + U('tapMap') + '<br>' + U('boatTip') + '</p>' +
     '<div><h1>' + esc(T(s.name)) + '</h1>' + (s.aka && T(s.aka) ? '<div class="note">' + esc(T(s.aka)) + '</div>' : '') + '</div>' +
     '<div class="chips"><span class="chip">' + chips[0] + '</span>' + lvChip(s.level) + chips.slice(1).map(c => '<span class="chip">' + esc(c) + '</span>').join('') + '</div>' +
     '<p>' + esc(T(s.desc)) + '</p><h3>' + U('seeT') + '</h3><div class="see">' + s.see.map(x => '<div>' + esc(T(x)) + '</div>').join('') + '</div>' +
