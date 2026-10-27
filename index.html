@@ -1115,7 +1115,7 @@ function priceLine() {
 let warns = [];
 fetch('warnings.json?t=' + Math.floor(Date.now() / 6e5)).then(r => r.ok ? r.json() : null).then(d => { if (d && d.warnings && d.warnings.length) { warns = d.warnings; if (route.v === 'home' || route.v === 'sites') render(); } }).catch(() => {});
 const warnBar = () => warns.length ? '<a class="warnbar" ' + ext + ' href="' + esc(warns[0].pdf || 'https://www.tmd.go.th/warning-and-events/warning-storm') + '">' + svg('alert') + '<div><b>' + U('warnT') + '</b><span>' + esc(lang === 'th' ? warns[0].th : warns[0].en) + ' · ' + U('warnS') + ' ›</span></div></a>' : '';
-const WX_ON = false;   // sample shown 27 Oct; true after Michael's go (?wx=1 shows the tile for testing)
+const WX_ON = true;    // live 27 Oct 2026, Michael's go
 const WX_PTS = { town: [10.50, 99.18], sea: [10.60, 99.33] };
 let wx = null, wxBusy = false, wxFail = false;
 try { wx = JSON.parse(localStorage.getItem('wx') || 'null'); } catch (e) {}
