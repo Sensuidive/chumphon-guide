@@ -83,7 +83,8 @@ body.th .btn{font-weight:500}
 .otag{display:table;margin-top:4px;font-size:14px;font-weight:700;color:#9a3b1f}.otag.on{color:#137a3f}
 .scrollx .chip svg{width:15px;height:15px;vertical-align:-2px;margin-right:4px}
 .offl{position:fixed;left:0;right:0;bottom:calc(64px + env(safe-area-inset-bottom,0px));z-index:40;background:#5a3e00;color:#fff;text-align:center;font-weight:700;font-size:14px;padding:8px 12px}
-.inst.ios{margin:0 0 14px}.boattip{margin:8px 0 0}.mapnote{margin:8px 0 14px}
+.inst.ios{margin:0 0 14px}.boattip{margin:8px 0 0}.mapnote{margin:8px 0 6px}
+.snav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:0 0 10px}.snav button{width:44px;height:44px;border-radius:50%;border:1px solid var(--line);background:var(--card);color:var(--navy);font-size:26px;font-weight:900;line-height:1;cursor:pointer}.snav button:disabled{opacity:.3;cursor:default}.snav .dots{display:flex;gap:7px}.snav .dots i{width:8px;height:8px;border-radius:50%;background:var(--line)}.snav .dots i.on{background:var(--navy);width:20px;border-radius:4px}
 .chk{display:flex;align-items:center;gap:10px;min-height:44px;font-weight:600;margin:2px 0 6px}.chk input{width:22px;height:22px;accent-color:var(--navy,#0e2f4a)}
 .tot{margin:10px 0;background:var(--soft);border-radius:14px;padding:11px 12px;line-height:1.5}.trust{text-align:center;font-size:14px;font-weight:700;color:var(--navy,#0e2f4a);margin:10px 0 4px}
 .seg{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;background:var(--sand);border-radius:12px;padding:3px}
@@ -164,6 +165,7 @@ body.th .tile b{font-weight:600}
 .site .m b{font-weight:800;font-size:14.5px}
 body.th .site .m b{font-weight:600}
 .site .m>span{font-size:14px;color:var(--muted);font-weight:600}
+.site .m>span.tag{color:var(--yel);font-weight:800}
 .site .go{flex:none;color:var(--sea);font-weight:900;font-size:22px}
 .site.best{border:2px solid var(--yel);background:var(--warn)}
 .tag{display:inline-block;width:fit-content;font-weight:800;font-size:14px;letter-spacing:1px;background:var(--navy);color:var(--yel);padding:2px 7px;border-radius:8px}
@@ -365,7 +367,7 @@ const ui = {
   cityTour: ['City Tour', 'ทัวร์ชุมพร'], places: ['places', 'แห่ง'], sightings: ['sightings logged', 'ครั้งที่บันทึกไว้'],
   sitesN: ['11 sites, 9 with maps', '11 จุด มีแผนที่ 9 จุด'], park: ['Mu Ko Chumphon National Park', 'อุทยานแห่งชาติหมู่เกาะชุมพร'],
   all: ['All', 'ทั้งหมด'], ow: ['Open Water', 'Open Water'], adv: ['Advanced', 'Advanced'], allLv: ['All levels', 'ทุกระดับ'],
-  best: ['BEST FOR WHALE SHARKS', 'จุดที่พบฉลามวาฬบ่อยที่สุด'], north: ['North islands · site maps coming later', 'เกาะทางเหนือ · แผนที่จะตามมา'],
+  prevSite: ['Previous dive site', 'จุดดำน้ำก่อนหน้า'], nextSite: ['Next dive site', 'จุดดำน้ำถัดไป'], best: ['BEST FOR WHALE SHARKS', 'จุดที่พบฉลามวาฬบ่อยที่สุด'], north: ['North islands · site maps coming later', 'เกาะทางเหนือ · แผนที่จะตามมา'],
   disc: ['For illustration only, not for navigation. Depths are approximate.', 'ภาพประกอบเท่านั้น ห้ามใช้เดินเรือ ความลึกเป็นค่าโดยประมาณ'],
   site: ['Site', 'จุดที่'], of: ['of', 'จาก'], max: ['Max', 'ลึกสุด'], m: ['m', 'ม.'], moor: ['mooring buoys', 'ทุ่นผูกเรือ'], moor1: ['mooring buoy', 'ทุ่นผูกเรือ'],
   seeT: ["What you'll see", 'สิ่งที่จะได้เห็น'], tapMap: ['Pinch to zoom the map', 'ใช้สองนิ้วถ่างเพื่อซูมแผนที่'],
@@ -761,6 +763,20 @@ VIEWS.sites = () => {
     '<p class="note">' + U('disc') + '</p>';
 };
 
+// swipe or tap between dive sites, south to north (Michael 27 Oct); replace() so Back still returns to the list
+const goSite = d => { const i = DATA.sites.findIndex(s => location.hash === '#site-' + s.id), j = i + d; if (i < 0 || j < 0 || j >= DATA.sites.length) return; location.replace('#site-' + DATA.sites[j].id); };
+const siteNav = i => '<div class="snav"><button type="button" aria-label="' + U('prevSite') + '"' + (i ? '' : ' disabled') + ' onclick="goSite(-1)">‹</button><span class="dots" aria-hidden="true">' +
+  DATA.sites.map((x, k) => '<i' + (k === i ? ' class="on"' : '') + '></i>').join('') + '</span><button type="button" aria-label="' + U('nextSite') + '"' + (i < DATA.sites.length - 1 ? '' : ' disabled') + ' onclick="goSite(1)">›</button></div>';
+(() => {
+  let x0 = null, y0 = 0, t0 = 0;
+  document.addEventListener('touchstart', e => { const cx = e.touches[0].clientX; x0 = e.touches.length === 1 && /^#site-/.test(location.hash) && cx > 24 && cx < innerWidth - 24 ? cx : null;   // screen edges = phone back gesture y0 = x0 === null ? 0 : e.touches[0].clientY; t0 = Date.now(); }, { passive: true });
+  document.addEventListener('touchend', e => {
+    if (x0 === null) return;
+    const t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
+    if (window.visualViewport && visualViewport.scale > 1.05) return;   // map pinch-zoomed: let the guest pan
+    if (Math.abs(dx) > 60 && Math.abs(dx) > 1.8 * Math.abs(dy) && Date.now() - t0 < 800) goSite(dx < 0 ? 1 : -1);
+  }, { passive: true });
+})();
 VIEWS.site = id => {
   const i = DATA.sites.findIndex(s => s.id === id), s = DATA.sites[i];
   if (!s) return VIEWS.sites();
@@ -771,6 +787,7 @@ VIEWS.site = id => {
   const hasWS = s.see.some(x => /whale/i.test(x.en)) || seen.length;
   return '<div class="imgbox"><img src="' + s.img[lang] + '" alt="' + esc(mapAlt(s)) + '" width="900" height="1125" loading="lazy" decoding="async"></div>' +
     '<p class="note mapnote">' + U('tapMap') + '<br>' + U('boatTip') + '</p>' +
+    siteNav(i) +
     '<div><h1>' + esc(T(s.name)) + '</h1>' + (s.aka && T(s.aka) ? '<div class="note">' + esc(T(s.aka)) + '</div>' : '') + '</div>' +
     '<div class="chips"><span class="chip">' + chips[0] + '</span>' + lvChip(s.level) + chips.slice(1).map(c => '<span class="chip">' + esc(c) + '</span>').join('') + '</div>' +
     '<p>' + esc(T(s.desc)) + '</p><h3>' + U('seeT') + '</h3><div class="see">' + s.see.map(x => '<div>' + esc(T(x)) + '</div>').join('') + '</div>' +
