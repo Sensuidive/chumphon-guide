@@ -456,6 +456,7 @@ const ui = {
   wxTideSrc: ['Tides: Hydrographic Department, Royal Thai Navy, Ko Mattaphon station. Times are to the nearest 15 minutes.', 'ข้อมูลน้ำ: กรมอุทกศาสตร์ กองทัพเรือ สถานีเกาะมัตโพน เวลาปัดเป็นทุก 15 นาที'],
   wxLoad: ['Loading the forecast...', 'กำลังโหลดพยากรณ์...'], wxErr: ['No forecast right now. Check your signal and try again.', 'ยังโหลดพยากรณ์ไม่ได้ ตรวจสอบสัญญาณแล้วลองใหม่'],
   wxCredit: ['Weather data: MET Norway (CC BY 4.0). Updated', 'ข้อมูลอากาศ: MET Norway (CC BY 4.0) อัปเดต'],
+  wxCreditT: ['Weather data: Thai Meteorological Department,', 'ข้อมูลอากาศ: กรมอุตุนิยมวิทยา'], wxUpd: ['Updated', 'อัปเดต'],
   wN: ['N', 'เหนือ'], wNE: ['NE', 'ตะวันออกเฉียงเหนือ'], wE: ['E', 'ตะวันออก'], wSE: ['SE', 'ตะวันออกเฉียงใต้'], wS: ['S', 'ใต้'], wSW: ['SW', 'ตะวันตกเฉียงใต้'], wW: ['W', 'ตะวันตก'], wNW: ['NW', 'ตะวันตกเฉียงเหนือ'],
   warnT: ['Weather warning today', 'ประกาศเตือนภัยวันนี้'], warnS: ['Thai Meteorological Department', 'กรมอุตุนิยมวิทยา'],
   wxToday: ['Today', 'วันนี้'], wxTile: ['3-day forecast, wind at the dive sites, tides, warnings', 'พยากรณ์ 3 วัน ลมที่จุดดำน้ำ น้ำขึ้นน้ำลง ประกาศเตือน'], wxTom: ['Tomorrow', 'พรุ่งนี้'],
@@ -1121,15 +1122,25 @@ try { wx = JSON.parse(localStorage.getItem('wx') || 'null'); } catch (e) {}
 function wxLoad() {
   if (wxBusy || (wx && Date.now() - wx.at < 36e5)) return;
   wxBusy = true;
-  Promise.all(Object.values(WX_PTS).map(([la, lo]) => fetch('https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=' + la + '&lon=' + lo).then(r => r.json())))
-    .then(([t, s]) => { wx = { at: Date.now(), town: t.properties.timeseries, sea: s.properties.timeseries }; try { localStorage.setItem('wx', JSON.stringify(wx)); } catch (e) {} })
-    .catch(() => { wxFail = true; }).finally(() => { wxBusy = false; if (route.v === 'weather') render(); });
+  fetch('wx_tmd.json?t=' + Math.floor(Date.now() / 6e5)).then(r => r.ok ? r.json() : null).then(j => {
+    if (j && j.days && j.days.length && Date.now() - Date.parse(j.at) < 4.5 * 36e5) { wx = { at: Date.parse(j.at), tmd: j.days }; try { localStorage.setItem('wx', JSON.stringify(wx)); } catch (e) {} return; }
+    return wxMet();
+  }).catch(wxMet).catch(() => { wxFail = true; }).finally(() => { wxBusy = false; if (route.v === 'weather') render(); });
+}
+function wxMet() {
+  return Promise.all(Object.values(WX_PTS).map(([la, lo]) => fetch('https://api.met.no/weatherapi/locationforecast/2.0/compact?lat=' + la + '&lon=' + lo).then(r => r.json())))
+    .then(([t, s]) => { wx = { at: Date.now(), town: t.properties.timeseries, sea: s.properties.timeseries }; try { localStorage.setItem('wx', JSON.stringify(wx)); } catch (e) {} });
 }
 const bkkDay = iso => new Date(new Date(iso).getTime() + 7 * 36e5).toISOString().slice(0, 10);
 const bkkHour = iso => new Date(new Date(iso).getTime() + 7 * 36e5).getUTCHours();
 const wxSky = c => /thunder/.test(c) ? 'wxThun' : /showers/.test(c) ? 'wxShow' : /rain|sleet/.test(c) ? 'wxRainy' : /cloudy/.test(c) && !/partly/.test(c) ? 'wxCloud' : /fair|partly/.test(c) ? 'wxFair' : 'wxSun';
 const compass = d => U(['wN', 'wNE', 'wE', 'wSE', 'wS', 'wSW', 'wW', 'wNW'][Math.round(d / 45) % 8]);
+// TMD cond 1-12: clear, partly cloudy, cloudy, overcast, light/moderate/heavy rain, thunderstorm, very cold, cold, cool, very hot
+const TMD_SKY = [, 'wxSun', 'wxFair', 'wxCloud', 'wxCloud', 'wxShow', 'wxRainy', 'wxRainy', 'wxThun', 'wxFair', 'wxFair', 'wxFair', 'wxSun'];
+const wxName = (d, i) => i === 0 ? U('wxToday') : i === 1 ? U('wxTom') : new Date(d + 'T12:00:00Z').toLocaleDateString(lang === 'th' ? 'th-TH' : 'en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
 function wxDays() {
+  if (wx.tmd) { const today = bkkDay(new Date().toISOString());
+    return wx.tmd.filter(x => x.d >= today).slice(0, 3).map((x, i) => ({ name: wxName(x.d, i), iso: x.d, sky: TMD_SKY[x.cond] || 'wxFair', hi: x.hi, lo: x.lo, rain: x.rain, wlo: x.wlo, whi: x.whi, wdir: compass(x.wd) })); }
   const days = [...new Set(wx.town.map(x => bkkDay(x.time)))].slice(0, 3);
   return days.map((d, i) => {
     const tt = wx.town.filter(x => bkkDay(x.time) === d), ss = wx.sea.filter(x => bkkDay(x.time) === d && bkkHour(x.time) >= 8 && bkkHour(x.time) <= 14);
@@ -1139,7 +1150,7 @@ function wxDays() {
     const w = ss.length ? ss : wx.sea.filter(x => bkkDay(x.time) === d);
     const ws = w.map(x => x.data.instant.details.wind_speed * 3.6), dirs = w.map(x => x.data.instant.details.wind_from_direction);
     const dir = dirs.length ? Math.atan2(dirs.reduce((a, b) => a + Math.sin(b * Math.PI / 180), 0), dirs.reduce((a, b) => a + Math.cos(b * Math.PI / 180), 0)) * 180 / Math.PI : 0;
-    const name = i === 0 ? U('wxToday') : i === 1 ? U('wxTom') : new Date(d + 'T12:00:00Z').toLocaleDateString(lang === 'th' ? 'th-TH' : 'en-GB', { weekday: 'short', day: 'numeric', month: 'short' });
+    const name = wxName(d, i);
     return { name, iso: d, sky: wxSky(sym), hi: Math.round(Math.max(...temps)), lo: Math.round(Math.min(...temps)), rain: Math.round(rain * 10) / 10,
       wlo: ws.length ? Math.round(Math.min(...ws)) : null, whi: ws.length ? Math.round(Math.max(...ws)) : null, wdir: compass((dir + 360) % 360) };
   });
@@ -1154,12 +1165,12 @@ VIEWS.weather = () => {
     '<div class="card gh"><div class="ch"><span class="ic" style="background:#fdf3d6;color:#a87300">' + svg('sun') + '</span><div><h2>' + U('wxTown') + '</h2><p>' + U('wxSub') + '</p></div></div>' +
       D.map(d => '<div class="ttr"><span class="n">' + d.name + '<small>' + U(d.sky) + '</small></span><span class="tm">' + d.hi + '° / ' + d.lo + '°<small class="rn">' + d.rain + ' mm ' + U('wxRain') + '</small></span></div>').join('') + '</div>' +
     '<div class="card gh"><div class="ch"><span class="ic" style="background:#e7f2f9;color:#1f7fb8">' + svg('wave') + '</span><div><h2>' + U('wxSea') + '</h2><p>' + U('wxSeaS') + '</p></div></div>' +
-      D.map(d => '<div class="ttr"><span class="n">' + d.name + '<small>' + U('wxFrom') + ' ' + d.wdir + '</small></span><span class="tm">' + (d.wlo == null ? '-' : d.wlo + '-' + d.whi + ' ' + U('wxKmh')) + '</span></div>').join('') + '</div>' +
+      D.map(d => '<div class="ttr"><span class="n">' + d.name + '<small>' + U('wxFrom') + ' ' + d.wdir + '</small></span><span class="tm">' + (d.wlo == null ? '-' : (d.wlo === d.whi ? d.wlo : d.wlo + '-' + d.whi) + ' ' + U('wxKmh')) + '</span></div>').join('') + '</div>' +
     (D.some(d => (DATA.tides || {})[d.iso]) ? '<div class="card gh"><div class="ch"><span class="ic" style="background:#e3f3f1;color:#138a8a">' + svg('clock') + '</span><div><h2>' + U('wxTide') + '</h2><p>' + U('wxTideC') + '</p></div></div>' +
       D.map(d => '<div class="ttr"><span class="n">' + d.name + '</span><span class="tm tdl">' + ((DATA.tides || {})[d.iso] || []).map(e => '<span>' + U(e[2] === 'H' ? 'wxHi' : 'wxLo') + ' ' + e[0] + ' <small class="rn">' + e[1].toFixed(1) + ' ' + U('wxM') + '</small></span>').join('') + '</span></div>').join('') +
       '<p class="note">' + U('wxTideSrc') + '</p></div>' : '') +
     link('https://hydro.navy.mi.th/waterlaveltable', 'clock', '#e3f3f1', '#138a8a', 'wxTideF', 'wxTideS') +
-    '<p class="note">' + U('wxCredit') + ' ' + when + '</p>';
+    (wx.tmd ? '<p class="note">' + U('wxCreditT') + ' <a ' + ext + ' href="https://data.tmd.go.th/">data.tmd.go.th</a>. ' + U('wxUpd') + ' ' + when + '</p>' : '<p class="note">' + U('wxCredit') + ' ' + when + '</p>');
 };
 // Getting here (Michael "go" 27 Oct): flights + night trains with To Chumphon / To Bangkok tabs, then the island boats card
 const gh = { f: 0, t: 0 };
