@@ -19,4 +19,4 @@ jobs:
           TMD_TOKEN: ${{ secrets.TMD_TOKEN }}
       - run: |
           git config user.name "Sensuidive"; git config user.email "sensuidive@users.noreply.github.com"
-          git add -A warnings.json wx_tmd.json 2>/dev/null; git diff --cached --quiet || (git commit -m "TMD data update" && git pull --rebase -q && git push)
+          for f in warnings.json wx_tmd.json; do [ -f $f ] && git add $f; done; git diff --cached --quiet || (git commit -m "TMD data update" && git pull --rebase -q && git push)
