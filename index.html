@@ -439,7 +439,7 @@ const ui = {
   ghToC: ['To Chumphon', 'ไปชุมพร'], ghToB: ['To Bangkok', 'ไปกรุงเทพฯ'], ghDaily: ['Daily', 'ทุกวัน'], ghSome: ['Some days', 'บางวัน'],
   ghFlyN: ['No flights from Suvarnabhumi. Book on the airline website or app.', 'ไม่มีเที่ยวบินจากสุวรรณภูมิ จองผ่านเว็บไซต์หรือแอปของสายการบิน'],
   ghTrainN: ['Book on the State Railway (SRT) D-Ticket website.', 'จองผ่านเว็บไซต์ D-Ticket ของการรถไฟฯ'],
-  ghBoatS: ['Lomprayah and Boonsiri to Koh Tao', 'ลมพระยาและบุญศิริ ไปเกาะเต่า'], ghBoatN: ['Times, prices and van pickup in town. We book it for you.', 'เวลา ราคา และรถรับในเมือง เราจองให้คุณ'],
+  ghBoatS: ['Lomprayah · Boonsiri, to Koh Tao / Phangan / Samui', 'ลมพระยา · บุญศิริ ไปเกาะเต่า / พะงัน / สมุย'], catT: ['High-speed catamarans', 'เรือเร็วคาตามารัน'], ghBoatN: ['Times, prices and van pickup in town. We book it for you.', 'เวลา ราคา และรถรับในเมือง เราจองให้คุณ'],
   ghBoatB: ['See boat times and book', 'ดูเวลาเรือและจอง'], ghFoot: ['Times checked October 2026. They can change, so check before you travel.', 'ตรวจสอบเวลาเมื่อ ต.ค. 2569 เวลาอาจเปลี่ยน โปรดตรวจสอบก่อนเดินทาง'],
   boatT: ['Island boats', 'เรือไปเกาะ'], ferryT: ['Ferry to Koh Tao / Koh Phangan / Samui', 'เรือไปเกาะเต่า / เกาะพะงัน / เกาะสมุย'], boatSub: ['Lomprayah and Boonsiri tickets', 'ตั๋วเรือลมพระยาและบุญศิริ'],
   boatP: ['We can book your boat ticket. Choose your trip and send it to us. We reply with the price and confirm your seats.', 'เราจองตั๋วเรือให้ได้ เลือกเส้นทางแล้วส่งมาหาเรา เราจะตอบกลับพร้อมราคาและยืนยันที่นั่ง'],
@@ -1100,7 +1100,7 @@ VIEWS.here = () => {
       DATA.here.fly[gh.f].map(r => row(r.n, r.d, r.a, '<small class="' + (r.some ? 'sd' : '') + '">' + U(r.some ? 'ghSome' : 'ghDaily') + '</small>')).join('') + '<p class="note">' + U('ghFlyN') + '</p></div>' +
     '<div class="card gh">' + head('train', '#fdf3d6', '#8a5f00', 'ghTrain', 'ghTrainS') + seg('t') +
       DATA.here.train[gh.t].map(r => row(T(r.n), r.d, r.a)).join('') + '<p class="note">' + U('ghTrainN') + '</p></div>' +
-    '<div class="card gh">' + head('ferry', '#e3f3f1', '#138a8a', 'boatT', 'ghBoatS') + '<p class="note" style="margin-top:0">' + U('ghBoatN') + '</p>' +
+    '<div class="card gh">' + head('ferry', '#e3f3f1', '#138a8a', 'catT', 'ghBoatS') + '<p class="note" style="margin-top:0">' + U('ghBoatN') + '</p>' +
       '<a class="btn" style="background:#138a8a;color:#fff;margin-top:10px" href="#boat">' + U('ghBoatB') + '</a></div>' +
     '<p class="note">' + U('ghFoot') + '</p>';
 };
