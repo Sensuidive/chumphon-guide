@@ -724,7 +724,7 @@ VIEWS.home = () => {
   return warnBar() + '<div class="hero s" style="background-image:url(' + DATA.img.hero + ')"><h1>Chumphon</h1><p>' + U('heroP') + '</p><span class="k">' + U('heroK') + '</span></div>' +
     '<form class="search" role="search" onsubmit="event.preventDefault();go(\'search-\'+encodeURIComponent(this.q.value))">' + svg('search') + '<input id="q" name="q" type="search" placeholder="' + U('search') + '" aria-label="' + U('search') + '"></form>' +
     iosCard() + seasonBox() + banners() +
-    start + shopRow(U('findShop')) + boatRow() + squadCard() + installCard() + '<div class="slogan">Go with the flow, Dance with the sea®</div>';
+    start + shopRow(U('findShop')) + boatRow() + squadCard() + installCard() + '<div class="slogan">Go with the flow, Dance with the sea™</div>';
 };
 // ---------- install on the home screen (Android: one tap; iPhone: Share > Add to Home Screen) ----------
 let instEvt = null, instHelp = false;
@@ -1287,7 +1287,7 @@ VIEWS.turtles = () => {
 let req = { what: 'dsd', from: '', to: '', n: 1, lg: 'English', name: '' };
 // Follow us + Find us + footer: end of Book now, and its own page #findus (every "Find the dive shop" row opens it; Michael 25 Oct)
 const contactEnd = () => '<h3>' + U('follow') + '</h3>' + socRow() + findUs() +
-    '<div class="foot"><span><a ' + ext + ' href="https://sensuidive.com">sensuidive.com</a> · <a href="mailto:info@sensuidive.com">info@sensuidive.com</a></span><span>PADI Dive Center no. 27540 · TAT licence 44/00186</span><span>' + U('privacy') + '</span><span style="font-style:italic;font-weight:700">Go with the flow, Dance with the sea®</span><span>© 2026 Sensui Diving Specialist Co., Ltd. All rights reserved.</span></div>';
+    '<div class="foot"><span><a ' + ext + ' href="https://sensuidive.com">sensuidive.com</a> · <a href="mailto:info@sensuidive.com">info@sensuidive.com</a></span><span>PADI Dive Center no. 27540 · TAT licence 44/00186</span><span>' + U('privacy') + '</span><span style="font-style:italic;font-weight:700">Go with the flow, Dance with the sea™</span><span>© 2026 Sensui Diving Specialist Co., Ltd. All rights reserved.</span></div>';
 VIEWS.findus = () => { header(U('findUs'), U('appSub'), true); tabs('book'); return contactEnd(); };
 VIEWS.book = () => {
   header(U('bookT'), U('bookSub')); tabs('book');
