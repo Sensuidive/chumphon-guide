@@ -646,7 +646,7 @@ function setLang(l) { lang = l; try { localStorage.setItem('cg_lang', l); } catc
 function parse() { const h = decodeURIComponent(location.hash.slice(1)) || 'home'; const i = h.indexOf('-'); route = i < 0 ? { v: h, p: '' } : { v: h.slice(0, i), p: h.slice(i + 1) }; }
 let lastKey = '';
 function render() {
-  document.body.className = lang;
+  ebPatch(); document.body.className = lang;
   document.documentElement.lang = lang;
   const V = VIEWS[route.v] || VIEWS.home;
   document.getElementById('view').innerHTML = V(route.p);
@@ -905,6 +905,13 @@ VIEWS.tour = () => {
 
 // ---------- courses ----------
 const ALLC = () => DATA.cgroups.flatMap(g => g.items);
+// Weekend early-bird 11,900 for bookings made by 31 Jan 2027 (Michael 17 Oct), then 12,900
+const EB_END = '2027-01-31', ebOn = () => bkkIso() <= EB_END;
+function ebPatch() {
+  const w = ALLC().find(c => c.id === 'weekend'); if (!w || !ebOn() || w.eb) return; w.eb = true;
+  w.price = { en: 'from 11,900', th: 'เริ่ม 11,900' };
+  w.desc = { en: 'Early-bird: 2 nights, 5 dives 11,900 if you book by 31 Jan 2027 (then 12,900). ' + w.desc.en, th: 'ราคาจองล่วงหน้า: 2 คืน 5 ไดฟ์ 11,900 เมื่อจองภายใน 31 ม.ค. 2570 (หลังจากนั้น 12,900) ' + w.desc.th };
+}
 const courseCard = c => '<div class="price" style="--c:' + c.col + '"><div class="l"><b>' + esc(T(c.name)) + '</b><span class="v">' + T(c.price) + ' <small>' + U('thb') + '</small></span></div><span>' + esc(T(c.desc)) + '</span>' +
   '<div class="acts" style="margin-top:6px"><a class="call" href="#book" onclick="req.what=\'' + c.id + '\'">' + U('bookThis') + '</a>' + chatPair('<a class="wa" ' + ext + ' href="' + waHref(WA, U('msgHi') + ' ' + T(c.name).replace(/<[^>]+>/g, '')) + '">WhatsApp</a>', '<a class="ln" ' + ext + ' href="' + lineHref(LINE_ID, U('msgHi') + ' ' + T(c.name).replace(/<[^>]+>/g, '')) + '">LINE</a>') + '</div></div>';
 let cg = '';
@@ -1321,6 +1328,7 @@ function reqOpts() {
 // price per person for the picked service (first number of the listed price); null = we reply with the price
 function reqPP() {
   if (/^tour/.test(req.what)) return req.n >= 3 ? DATA.tour.price3 : DATA.tour.price2;
+  if (req.what === 'weekend' && ebOn()) return 11900;
   const c = ALLC().find(x => x.id === req.what); if (!c) return null;
   const m = String(T(c.price)).match(/\d[\d,]*/); return m ? +m[0].replace(/,/g, '') : null;
 }
