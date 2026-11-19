@@ -287,6 +287,7 @@ body.th .price span{font-weight:400}
 .leaf p{font-size:14px}
 .soc{display:grid;grid-template-columns:1fr 1fr;gap:8px}.soc a{color:#fff;text-align:center;font-weight:800;font-size:14px;padding:10px;border-radius:12px;text-decoration:none}
 .foot a{color:inherit}
+.backsensui{text-align:center;margin:18px 0 6px;font-size:14px;font-weight:700}.backsensui a{color:var(--muted);text-decoration:none}
 .foot{display:flex;flex-direction:column;gap:3px;text-align:center;font-weight:600;font-size:14px;color:var(--muted)}
 .copy{display:flex;align-items:center;justify-content:space-between;gap:8px;background:var(--card);border:1px solid var(--line);border-radius:12px;padding:9px 12px;font-weight:700;font-size:14px}
 .copy button{border:1.5px solid var(--line);background:var(--paper);border-radius:9px;padding:5px 9px;font-weight:700;font-size:14px;cursor:pointer}
@@ -392,7 +393,7 @@ const ui = {
   call: ['Call', 'โทร'], map: ['Map', 'แผนที่'], web: ['Web', 'เว็บ'], email: ['Email', 'อีเมล'],
   noRes: ['Nothing found. Try another word.', 'ไม่พบข้อมูล ลองคำอื่น'], results: ['Results', 'ผลการค้นหา'],
   ratingsFrom: ['Map pins: Overture Maps Foundation, © OpenStreetMap contributors', 'หมุดแผนที่: Overture Maps Foundation, © OpenStreetMap contributors'],
-  bookT: ['Dive with Sensui', 'ดำน้ำกับ Sensui'], bookSub: ['PADI Dive Center · since 2019', 'PADI Dive Center · ตั้งแต่ปี 2562'],
+  bookT: ['Dive with Sensui', 'ดำน้ำกับ Sensui'], diveSensui: ['Dive with Sensui · sensuidive.com', 'ดำน้ำกับ Sensui · sensuidive.com'], bookSub: ['PADI Dive Center · since 2019', 'PADI Dive Center · ตั้งแต่ปี 2562'],
   about: ['Founded by a former saturation diver and IMCA Air Diving Supervisor, so safety comes first. Diving Chumphon since 2019, with courses and fun dives in English, Chinese, Thai and Malay.', 'ก่อตั้งโดยอดีตนักดำน้ำ Saturation และ IMCA Air Diving Supervisor ความปลอดภัยต้องมาก่อน ดำน้ำที่ชุมพรตั้งแต่ปี 2562 มีหลักสูตรและ Fun Dive เป็นภาษาอังกฤษ จีน ไทย และมาเลย์'],
   langs: ['Courses and fun dives in English, Chinese, Thai and Malay.', 'หลักสูตรและ Fun Dive เป็นภาษาอังกฤษ จีน ไทย และมาเลย์'],
   closed: ['Closed until 14 Feb 2027', 'ปิดถึง 14 ก.พ. 2570'], closedP: ['Message us to reserve your dates.', 'ทักมาจองวันล่วงหน้าได้เลย'],
@@ -653,7 +654,8 @@ function render() {
   ebPatch(); document.body.className = lang;
   document.documentElement.lang = lang;
   const V = VIEWS[route.v] || VIEWS.home;
-  document.getElementById('view').innerHTML = V(route.p);
+  // every page links back to the dive shop (Website plan, Michael yes 19 Nov)
+  document.getElementById('view').innerHTML = V(route.p) + '<p class="backsensui"><a ' + ext + ' href="https://sensuidive.com/">' + U('diveSensui') + ' ›</a></p>';
   const key = route.v + route.p;
   if (key !== lastKey) { window.scrollTo(0, 0); lastKey = key; }
 }
