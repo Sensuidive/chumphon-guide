@@ -1,36 +1,36 @@
 {
- "at": "2026-11-28T10:13:28+07:00",
+ "at": "2026-11-28T19:52:09+07:00",
  "src": "Thai Meteorological Department (TMD) Weather Forecast API",
  "days": [
   {
    "d": "2026-11-28",
    "hi": 31,
-   "lo": 23,
-   "rain": 0.3,
+   "lo": 25,
+   "rain": 0,
    "cond": 3,
-   "wlo": 19,
-   "whi": 50,
-   "wd": 28
+   "wlo": 10,
+   "whi": 41,
+   "wd": 42
   },
   {
    "d": "2026-11-29",
    "hi": 30,
-   "lo": 25,
-   "rain": 0.2,
+   "lo": 24,
+   "rain": 3.2,
    "cond": 4,
-   "wlo": 45,
-   "whi": 59,
-   "wd": 36
+   "wlo": 33,
+   "whi": 62,
+   "wd": 27
   },
   {
    "d": "2026-11-30",
-   "hi": 28,
-   "lo": 26,
-   "rain": 60.1,
-   "cond": 5,
-   "wlo": 54,
-   "whi": 54,
-   "wd": 39
+   "hi": 30,
+   "lo": 25,
+   "rain": 3,
+   "cond": 4,
+   "wlo": 53,
+   "whi": 53,
+   "wd": 44
   }
  ]
 }
